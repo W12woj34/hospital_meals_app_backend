@@ -31,5 +31,4 @@ public class PatientEntity extends PersonEntity {
     private Collection<OrderEntity> orders;
 
 
-
 }

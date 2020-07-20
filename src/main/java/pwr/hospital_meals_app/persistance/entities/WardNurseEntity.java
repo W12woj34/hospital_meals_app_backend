@@ -12,7 +12,7 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WardNurseEntity extends EmployeeEntity{
+public class WardNurseEntity extends EmployeeEntity {
 
     @ManyToOne
     @JoinColumn(name = "ward_id")

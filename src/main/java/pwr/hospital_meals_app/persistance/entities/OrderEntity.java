@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 public class OrderEntity extends AbstractPersistable<Integer> {
 
 
-    @OneToOne(mappedBy="order", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private MealEntity meal;
 
     @ManyToOne
@@ -33,7 +33,6 @@ public class OrderEntity extends AbstractPersistable<Integer> {
 
     @Column(name = "timestamp", nullable = false)
     private Timestamp timestamp;
-
 
 
 }

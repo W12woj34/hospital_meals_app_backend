@@ -4,7 +4,7 @@ CREATE TABLE Person
     first_name varchar(255) NOT NULL,
     last_name  varchar(255) NOT NULL,
     birth_date date         NOT NULL,
-    pesel      int      NOT NULL UNIQUE,
+    pesel      bigint      NOT NULL UNIQUE,
     PRIMARY KEY (id)
 );
 CREATE TABLE Employee

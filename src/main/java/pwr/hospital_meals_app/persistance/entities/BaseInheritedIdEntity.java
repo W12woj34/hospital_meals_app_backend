@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+
 import lombok.Data;
 import org.springframework.data.domain.Persistable;
 
@@ -20,7 +21,8 @@ public abstract class BaseInheritedIdEntity<ID extends Serializable> implements 
     protected ID id;
 
     // enables JPA to recognize that entity is new despite having non-null id
-    @Version private Integer version;
+    @Version
+    private Integer version;
 
     @Transient
     @Override

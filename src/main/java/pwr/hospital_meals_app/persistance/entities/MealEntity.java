@@ -3,6 +3,7 @@ package pwr.hospital_meals_app.persistance.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MealEntity extends BaseInheritedIdEntity<Integer> {
+public class MealEntity extends AbstractPersistable<Integer> {
 
     @OneToOne
     @MapsId
