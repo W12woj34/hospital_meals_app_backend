@@ -21,6 +21,6 @@ public class PatientDietDto extends BaseGeneratedIdDto<Integer> {
     private Integer patientId;
 
     @NotNull
-    private Integer dietId;
+    private DietDto diet;
 
 }

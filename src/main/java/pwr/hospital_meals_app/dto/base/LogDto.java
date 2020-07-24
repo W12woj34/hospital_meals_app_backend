@@ -18,6 +18,6 @@ public class LogDto extends BaseGeneratedIdDto<Integer> {
     private Integer userId;
 
     @NotNull
-    private Integer eventId;
+    private EventDto event;
 
 }

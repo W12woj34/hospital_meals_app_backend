@@ -15,9 +15,9 @@ public class OrderDto extends BaseGeneratedIdDto<Integer> {
     private Integer patientId;
 
     @NotNull
-    private Integer dietitianId;
+    private Integer nurseId;
 
     @NotNull
-    private Integer statusId;
+    private OrderStatusDto status;
 
 }

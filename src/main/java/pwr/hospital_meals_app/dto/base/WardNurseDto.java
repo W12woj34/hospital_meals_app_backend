@@ -12,6 +12,6 @@ import javax.validation.constraints.NotNull;
 public class WardNurseDto extends EmployeeDto {
 
     @NotNull
-    private Integer wardId;
+    private WardDto ward;
 
 }

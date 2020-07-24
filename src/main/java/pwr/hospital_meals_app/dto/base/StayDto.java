@@ -26,6 +26,6 @@ public class StayDto extends BaseGeneratedIdDto<Integer> {
     private boolean archived;
 
     @NotNull
-    private Integer wardId;
+    private WardDto ward;
 
 }

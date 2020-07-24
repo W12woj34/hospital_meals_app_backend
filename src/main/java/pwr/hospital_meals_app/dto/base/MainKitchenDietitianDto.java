@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class MainKitchenDietitian extends EmployeeDto {
+public class MainKitchenDietitianDto extends EmployeeDto {
 
 }

@@ -23,6 +23,6 @@ public class DietaryRestrictionDto extends BaseGeneratedIdDto<Integer> {
     private Integer dietitianId;
 
     @NotNull
-    private Integer statusId;
+    private RestrictionStatusDto status;
 
 }

@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pwr.hospital_meals_app.persistance.entities.BaseInheritedIdEntity;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -18,15 +20,17 @@ public class MealDto extends BaseInheritedIdEntity<Integer> {
     private String additionalInfo;
 
     @NotNull
+    @Min(1)
+    @Max(10)
     private Integer option;
 
     @NotNull
     private LocalDate date;
 
     @NotNull
-    private Integer typeId;
+    private MealTypeDto type;
 
     @NotNull
-    private Integer dietId;
+    private DietDto diet;
 
 }
