@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "order")
+@Table(name = "\"order\"")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
