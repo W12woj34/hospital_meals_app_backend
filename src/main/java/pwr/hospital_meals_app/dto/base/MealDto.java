@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MealDto extends BaseInheritedIdEntity<Integer> {
+public class MealDto extends BaseInheritedIdDto<Integer> {
 
     @Size(max = 255)
     private String additionalInfo;

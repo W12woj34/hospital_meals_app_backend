@@ -30,7 +30,7 @@ public abstract class WardNurseMapper
     @Override
     public abstract WardNurseEntity mapToEntity(WardNurseDto dto);
 
-    protected LoginEntity employeeEntityFromId(Integer id) {
+    protected LoginEntity loginEntityFromId(Integer id) {
         return loginRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
