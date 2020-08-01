@@ -14,7 +14,7 @@ import java.util.Collection;
 @AllArgsConstructor
 public class WardNurseEntity extends EmployeeEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ward_id")
     private WardEntity ward;
 

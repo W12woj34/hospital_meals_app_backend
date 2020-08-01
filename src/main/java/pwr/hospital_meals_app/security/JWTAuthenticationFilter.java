@@ -54,14 +54,15 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String tokenAuth =
                 Jwts.builder()
                         .setSubject(((User) auth.getPrincipal()).getUsername())
-                        .claim("roles", auth.getAuthorities())
+                        .claim("role", auth.getAuthorities())
                         .setIssuedAt(new Date(currentTimeMillis))
                         .setExpiration(new Date(currentTimeMillis + EXPIRATION_TIME))
                         .signWith(SignatureAlgorithm.HS512, SECRET_AUTH.getBytes())
                         .compact();
 
-        String tokenRefresh = auth.getCredentials().toString(); //TODO encode user identification data,
+        String tokenRefresh = auth.getCredentials().toString();
         // TODO which can be encoded during refresh
+
 
         response.addHeader(HEADER_STRING_AUTH, TOKEN_PREFIX + tokenAuth);
         response.addHeader(HEADER_STRING_REFRESH, tokenRefresh);

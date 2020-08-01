@@ -21,11 +21,11 @@ public class PatientDietEntity extends AbstractPersistable<Integer> {
     @Column(name = "end_date", nullable = true)
     private LocalDate endDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
     private PatientEntity patient;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diet_id")
     private DietEntity diet;
 

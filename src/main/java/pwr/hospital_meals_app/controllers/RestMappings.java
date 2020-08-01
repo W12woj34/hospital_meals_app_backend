@@ -28,6 +28,9 @@ public final class RestMappings {
     public static final String STAY = "/stays";
     public static final String WARD = "/wards";
     public static final String WARD_NURSE = "/ward-nurses";
+    public static final String SIGN_UP = "/sign-up";
+    public static final String REFRESH_TOKEN = "/refresh";
+    public static final String CHANGE_PASSWORD = "change-password";
 
     private RestMappings() {
     }

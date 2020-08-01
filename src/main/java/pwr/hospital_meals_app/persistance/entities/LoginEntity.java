@@ -21,4 +21,7 @@ public class LoginEntity extends AbstractPersistable<Integer> {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @OneToOne(mappedBy = "login", fetch = FetchType.LAZY)
+    private EmployeeEntity employee;
+
 }

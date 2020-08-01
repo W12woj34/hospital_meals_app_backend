@@ -19,15 +19,15 @@ public class OrderEntity extends AbstractPersistable<Integer> {
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private MealEntity meal;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
     private PatientEntity patient;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nurse_id")
     private WardNurseEntity nurse;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
     private OrderStatusEntity status;
 

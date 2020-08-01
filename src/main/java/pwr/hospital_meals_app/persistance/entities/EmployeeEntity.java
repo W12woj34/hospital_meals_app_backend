@@ -13,6 +13,7 @@ import java.util.Collection;
 @NoArgsConstructor
 public class EmployeeEntity extends PersonEntity {
 
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "login_id")
     private LoginEntity login;

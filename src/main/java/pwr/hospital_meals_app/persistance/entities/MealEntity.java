@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class MealEntity extends AbstractPersistable<Integer> {
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "id")
     private OrderEntity order;
@@ -30,11 +30,11 @@ public class MealEntity extends AbstractPersistable<Integer> {
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
     private MealTypeEntity type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diet_id")
     private DietEntity diet;
 

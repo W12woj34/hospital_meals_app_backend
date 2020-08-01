@@ -13,11 +13,11 @@ import javax.validation.constraints.Size;
 public class LoginDto extends BaseGeneratedIdDto<Integer> {
 
     @NotNull
-    @Size(max = 255)
+    @Size(max = 30)
     private String username;
 
     @NotNull
     @Size(max = 30)
-    private Integer password;
+    private String password;
 
 }

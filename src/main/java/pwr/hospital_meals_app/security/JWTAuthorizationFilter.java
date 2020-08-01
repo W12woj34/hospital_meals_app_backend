@@ -12,9 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Collections;
 
 import static pwr.hospital_meals_app.security.SecurityConstants.*;
 
@@ -58,23 +56,15 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                             .setSigningKey(SECRET_AUTH.getBytes())
                             .parseClaimsJws(token.replace(TOKEN_PREFIX, ""));
 
-            String unparsedRoles = claimsJws.getBody().get("roles").toString();
-            Collection<SimpleGrantedAuthority> roles = parseRoles(unparsedRoles);
+            SimpleGrantedAuthority role = new SimpleGrantedAuthority(claimsJws.getBody().get("role").toString());
 
             if (claimsJws.getBody().getSubject() != null) {
                 return new UsernamePasswordAuthenticationToken(
-                        claimsJws.getBody().getSubject(), null, roles);
+                        claimsJws.getBody().getSubject(), null, Collections.singletonList(role));
             }
             return null;
         }
         return null;
     }
 
-    private Collection<SimpleGrantedAuthority> parseRoles(String unparsedRoles) {
-
-        String[] rolesStrings = unparsedRoles.split(";");
-        Collection<SimpleGrantedAuthority> roles = new LinkedList<>();
-        Arrays.stream(rolesStrings).forEach(s -> roles.add(new SimpleGrantedAuthority(s)));
-        return roles;
-    }
 }

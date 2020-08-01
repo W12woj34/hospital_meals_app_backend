@@ -21,11 +21,11 @@ public class LogEntity extends AbstractPersistable<Integer> {
     @Column(name = "modified_entity_id", nullable = false)
     private int modifiedEntityId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private EmployeeEntity user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private EventEntity event;
 

@@ -17,15 +17,15 @@ public class DietaryRestrictionEntity extends AbstractPersistable<Integer> {
     @Column(name = "restriction", nullable = false)
     private String restriction;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
     private PatientEntity patient;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dietitian_id")
     private DietitianEntity dietitian;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
     private RestrictionStatusEntity status;
 

@@ -24,11 +24,11 @@ public class StayEntity extends AbstractPersistable<Integer> {
     @Column(name = "archived", nullable = false)
     private boolean archived;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
     private PatientEntity patient;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ward_id")
     private WardEntity ward;
 }
