@@ -60,9 +60,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                         .signWith(SignatureAlgorithm.HS512, SECRET_AUTH.getBytes())
                         .compact();
 
-        String tokenRefresh = auth.getCredentials().toString();
-        // TODO which can be encoded during refresh
-
+        String tokenRefresh =
+                Jwts.builder()
+                        .setSubject(((User) auth.getPrincipal()).getUsername())
+                        .setIssuedAt(new Date(currentTimeMillis))
+                        .setExpiration(new Date(currentTimeMillis + EXPIRATION_TIME_REFRESH))
+                        .signWith(SignatureAlgorithm.HS512, SECRET_REFRESH.getBytes())
+                        .compact();
 
         response.addHeader(HEADER_STRING_AUTH, TOKEN_PREFIX + tokenAuth);
         response.addHeader(HEADER_STRING_REFRESH, tokenRefresh);

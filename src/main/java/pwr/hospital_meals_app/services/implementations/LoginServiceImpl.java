@@ -87,7 +87,12 @@ public class LoginServiceImpl
     }
 
     private String getUsernameFromRefreshToken(String refreshToken) {
-        //todo decrypt refresh token to username
-        return null;
+
+        Jws<Claims> claimsJws =
+                Jwts.parser()
+                        .setSigningKey(SECRET_REFRESH.getBytes())
+                        .parseClaimsJws(refreshToken);
+
+        return claimsJws.getBody().getSubject();
     }
 }
