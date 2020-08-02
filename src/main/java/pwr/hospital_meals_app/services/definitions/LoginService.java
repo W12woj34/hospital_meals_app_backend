@@ -9,7 +9,7 @@ public interface LoginService extends CrudService<LoginDto, Integer> {
 
     void changePassword(Integer id, PasswordChangeDto dto);
 
-    Optional<Integer> getUserId(String token);
+    Optional<Integer> getUserLoginId(String token);
 
     String refresh(String refreshToken);
 

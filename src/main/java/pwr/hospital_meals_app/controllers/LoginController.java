@@ -51,7 +51,7 @@ public class LoginController
     public void changeYourPassword(@RequestHeader("Authorization") String token,
                                    @Valid @RequestBody PasswordChangeDto dto) {
 
-        Integer id = service.getUserId(token).orElseThrow(EntityNotFoundException::new);
+        Integer id = service.getUserLoginId(token).orElseThrow(EntityNotFoundException::new);
         changePassword(id, dto);
     }
 }

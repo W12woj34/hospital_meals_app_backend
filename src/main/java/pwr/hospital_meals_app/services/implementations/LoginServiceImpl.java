@@ -55,13 +55,13 @@ public class LoginServiceImpl
     }
 
     @Override
-    public Optional<Integer> getUserId(String token) {
+    public Optional<Integer> getUserLoginId(String token) {
         Jws<Claims> claimsJws =
                 Jwts.parser()
                         .setSigningKey(SECRET_AUTH.getBytes())
                         .parseClaimsJws(token.replace(TOKEN_PREFIX, ""));
 
-        return Optional.ofNullable(repository.findByUsername(claimsJws.getBody().getSubject()).getEmployee().getId());
+        return Optional.ofNullable(repository.findByUsername(claimsJws.getBody().getSubject()).getId());
     }
 
     @Override

@@ -8,8 +8,8 @@ import pwr.hospital_meals_app.services.definitions.EmployeeService;
 @RestController
 @RequestMapping(RestMappings.EMPLOYEE)
 public class EmployeeController
-        extends BaseRestCrudController<
-        EmployeeDto, Integer> {
+        extends BaseRestCrudAndPersonalDataController<
+        EmployeeDto> {
 
     public EmployeeController(EmployeeService service) {
         super(service);
