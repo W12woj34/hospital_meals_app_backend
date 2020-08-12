@@ -33,6 +33,6 @@ public class StayServiceImpl
                 eventRepository,
                 eventMapper,
                 EVENT_TYPE.STAY_CREATE.getValue(),
-                EVENT_TYPE.STAY_CREATE.getValue());
+                EVENT_TYPE.STAY_END.getValue());
     }
 }
