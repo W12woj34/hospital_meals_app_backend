@@ -28,9 +28,10 @@ public class LoginController
     }
 
     @PostMapping(RestMappings.SIGN_UP)
-    public ResponseEntity<LoginDto> signUp(@Valid @RequestBody LoginDto dto, HttpServletRequest request) {
+    public ResponseEntity<LoginDto> signUp(@RequestHeader("Authorization") String token,
+                                           @Valid @RequestBody LoginDto dto, HttpServletRequest request) {
         dto.setPassword(service.encodePassword(dto.getPassword()));
-        return create(dto, request);
+        return create(token, dto, request);
     }
 
     @PostMapping(RestMappings.REFRESH_TOKEN)

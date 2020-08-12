@@ -15,6 +15,12 @@ import java.util.Optional;
 import static pwr.hospital_meals_app.security.SecurityConstants.SECRET_AUTH;
 import static pwr.hospital_meals_app.security.SecurityConstants.TOKEN_PREFIX;
 
+/**
+ * Base class for service which extends CRUD specification service and log specific user actions in database
+ *
+ * @param <T>  DTO type
+ * @param <E>  Entity type
+ */
 public abstract class BasePersonalCrudService<
         T extends PersistableDto<Integer>,
         E extends Persistable<Integer>,
