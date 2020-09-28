@@ -33,6 +33,7 @@ public final class RestMappings {
     public static final String SIGN_UP = "/sign-up";
     public static final String REFRESH_TOKEN = "/refresh";
     public static final String CHANGE_PASSWORD = "change-password";
+    public static final String CHANGE_PASSWORD_FORCE = "change-password-force";
 
     private RestMappings() {
     }

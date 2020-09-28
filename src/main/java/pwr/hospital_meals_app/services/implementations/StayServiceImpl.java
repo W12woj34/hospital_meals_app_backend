@@ -5,14 +5,12 @@ import pwr.hospital_meals_app.dto.base.StayDto;
 import pwr.hospital_meals_app.persistance.entities.StayEntity;
 import pwr.hospital_meals_app.persistance.repositories.EventRepository;
 import pwr.hospital_meals_app.persistance.repositories.LoginRepository;
-import pwr.hospital_meals_app.persistance.repositories.OrderRepository;
 import pwr.hospital_meals_app.persistance.repositories.StayRepository;
 import pwr.hospital_meals_app.services.definitions.BaseLoggingCrudService;
 import pwr.hospital_meals_app.services.definitions.EVENT_TYPE;
 import pwr.hospital_meals_app.services.definitions.LogService;
 import pwr.hospital_meals_app.services.definitions.StayService;
 import pwr.hospital_meals_app.services.mappers.EventMapper;
-import pwr.hospital_meals_app.services.mappers.OrderMapper;
 import pwr.hospital_meals_app.services.mappers.StayMapper;
 
 @Service

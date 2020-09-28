@@ -8,9 +8,11 @@ public class SecurityConstants {
   public static final String TOKEN_PREFIX = "Bearer ";
   public static final String HEADER_STRING_AUTH = "Authorization";
   public static final String HEADER_STRING_REFRESH = "Refresh";
-  public static final String ROLE_NURSE = "nurse";
-  public static final String ROLE_KITCHEN = "kitchen";
-  public static final String ROLE_DIETITIAN = "dietitian";
-  public static final String ROLE_MOVEMENT = "movement";
+  public static final String HEADER_STRING_ROLE = "Role";
+  public static final String ROLE_NURSE = "NURSE";
+  public static final String ROLE_KITCHEN = "KITCHEN";
+  public static final String ROLE_DIETITIAN = "DIETITIAN";
+  public static final String ROLE_MOVEMENT = "MOVEMENT";
+  public static final String ROLE_PREFIX = "ROLE_";
 
 }

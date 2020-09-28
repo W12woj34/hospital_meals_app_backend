@@ -1,8 +1,5 @@
 package pwr.hospital_meals_app.security;
 
-import static pwr.hospital_meals_app.security.SecurityConstants.HEADER_STRING_AUTH;
-import static pwr.hospital_meals_app.security.SecurityConstants.HEADER_STRING_REFRESH;
-
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -17,6 +14,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pwr.hospital_meals_app.services.implementations.UserDetailsServiceImpl;
+
+import static pwr.hospital_meals_app.security.SecurityConstants.*;
 
 
 @EnableWebSecurity
@@ -64,7 +63,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         corsConfiguration.setExposedHeaders(
                 Arrays.asList(
                         HEADER_STRING_AUTH,
-                        HEADER_STRING_REFRESH
+                        HEADER_STRING_REFRESH,
+                        HEADER_STRING_ROLE
                 ));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);

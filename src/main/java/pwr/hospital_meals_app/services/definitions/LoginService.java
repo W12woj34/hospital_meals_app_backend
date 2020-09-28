@@ -14,4 +14,6 @@ public interface LoginService extends CrudService<LoginDto, Integer> {
     String refresh(String refreshToken);
 
     String encodePassword(String password);
+
+    String getUserPassword(Integer id);
 }

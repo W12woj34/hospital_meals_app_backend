@@ -42,7 +42,10 @@ public class LoginController
     @PutMapping(RestMappings.CHANGE_PASSWORD + RestMappings.ID)
     public void changePassword(
             @PathVariable Integer id,
-            @Valid @RequestBody PasswordChangeDto dto) {
+            @RequestParam String oldPassword,
+            @RequestParam String newPassword) {
+
+        @Valid PasswordChangeDto dto = new PasswordChangeDto(oldPassword, newPassword);
 
         service.changePassword(id, dto);
 
@@ -50,9 +53,21 @@ public class LoginController
 
     @PutMapping(RestMappings.CHANGE_PASSWORD)
     public void changeYourPassword(@RequestHeader("Authorization") String token,
-                                   @Valid @RequestBody PasswordChangeDto dto) {
+                                   @RequestParam String oldPassword,
+                                   @RequestParam String newPassword) {
 
         Integer id = service.getUserLoginId(token).orElseThrow(EntityNotFoundException::new);
-        changePassword(id, dto);
+        changePassword(id, oldPassword, newPassword);
+    }
+
+    @PutMapping(RestMappings.CHANGE_PASSWORD_FORCE + RestMappings.ID)
+    public void changePasswordForce(
+            @PathVariable Integer id,
+            @RequestParam String newPassword) {
+
+        @Valid PasswordChangeDto dto = new PasswordChangeDto(service.getUserPassword(id), newPassword);
+
+        service.changePassword(id, dto);
+
     }
 }

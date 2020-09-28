@@ -51,22 +51,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         if (wardNurseRepository.findById(Objects.requireNonNull(user.getId())).isPresent()) {
             return new User(user.getUsername(), user.getPassword(),
-                    Collections.singletonList(new SimpleGrantedAuthority(ROLE_NURSE)));
+                    Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + ROLE_NURSE)));
         }
 
         if (dietitianRepository.findById(Objects.requireNonNull(user.getId())).isPresent()) {
             return new User(user.getUsername(), user.getPassword(),
-                    Collections.singletonList(new SimpleGrantedAuthority(ROLE_DIETITIAN)));
+                    Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + ROLE_DIETITIAN)));
         }
 
         if (mainKitchenDietitianRepository.findById(Objects.requireNonNull(user.getId())).isPresent()) {
             return new User(user.getUsername(), user.getPassword(),
-                    Collections.singletonList(new SimpleGrantedAuthority(ROLE_KITCHEN)));
+                    Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + ROLE_KITCHEN)));
         }
 
         if (patientMovementRepository.findById(Objects.requireNonNull(user.getId())).isPresent()) {
             return new User(user.getUsername(), user.getPassword(),
-                    Collections.singletonList(new SimpleGrantedAuthority(ROLE_MOVEMENT)));
+                    Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + ROLE_MOVEMENT)));
         }
 
         throw new UsernameNotFoundException(username);

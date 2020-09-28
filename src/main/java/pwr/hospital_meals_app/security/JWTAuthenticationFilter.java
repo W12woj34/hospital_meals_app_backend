@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pwr.hospital_meals_app.persistance.entities.LoginEntity;
@@ -16,7 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 import static pwr.hospital_meals_app.security.SecurityConstants.*;
 
@@ -49,12 +52,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             FilterChain chain,
             Authentication auth) {
 
+        String role = resolveRole(auth.getAuthorities());
 
         long currentTimeMillis = System.currentTimeMillis();
         String tokenAuth =
                 Jwts.builder()
                         .setSubject(((User) auth.getPrincipal()).getUsername())
-                        .claim("role", auth.getAuthorities())
+                        .claim("role", role)
                         .setIssuedAt(new Date(currentTimeMillis))
                         .setExpiration(new Date(currentTimeMillis + EXPIRATION_TIME))
                         .signWith(SignatureAlgorithm.HS512, SECRET_AUTH.getBytes())
@@ -68,7 +72,16 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                         .signWith(SignatureAlgorithm.HS512, SECRET_REFRESH.getBytes())
                         .compact();
 
+        response.addHeader(HEADER_STRING_ROLE, role);
         response.addHeader(HEADER_STRING_AUTH, TOKEN_PREFIX + tokenAuth);
         response.addHeader(HEADER_STRING_REFRESH, tokenRefresh);
+    }
+
+    private String resolveRole(Collection<? extends GrantedAuthority> authorities) {
+
+        if (authorities.stream().findFirst().isPresent()) {
+            return authorities.stream().findFirst().get().getAuthority();
+        }
+        throw new SecurityException();
     }
 }

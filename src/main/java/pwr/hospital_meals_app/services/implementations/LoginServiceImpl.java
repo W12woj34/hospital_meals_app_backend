@@ -86,6 +86,16 @@ public class LoginServiceImpl
         return bCryptPasswordEncoder.encode(password);
     }
 
+    @Override
+    public String getUserPassword(Integer id) {
+
+        if(repository.findById(id).isPresent()){
+            return repository.findById(id).get().getPassword();
+        }
+        throw new EntityNotFoundException();
+
+    }
+
     private String getUsernameFromRefreshToken(String refreshToken) {
 
         Jws<Claims> claimsJws =
