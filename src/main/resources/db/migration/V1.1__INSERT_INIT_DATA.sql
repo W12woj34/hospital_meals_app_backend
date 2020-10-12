@@ -53,6 +53,7 @@ INSERT INTO Event(id, event_name) VALUES (3, 'Dodanie ograniczenia żywieniowego
 INSERT INTO Event(id, event_name) VALUES (4, 'Zaktualizowanie ograniczenia żywieniowego');
 INSERT INTO Event(id, event_name) VALUES (5, 'Przyjęcie pacjenta');
 INSERT INTO Event(id, event_name) VALUES (6, 'Wypisanie pacjenta');
+INSERT INTO Event(id, event_name) VALUES (7, 'Zaktualizowanie diety');
 INSERT INTO Meal_Type(id, name) VALUES (1, 'Śniadanie');
 INSERT INTO Meal_Type(id, name) VALUES (2, 'Obiad');
 INSERT INTO Meal_Type(id, name) VALUES (3, 'Kolacja');

@@ -7,7 +7,8 @@ public enum EVENT_TYPE {
     RESTRICTION_CREATE(3),
     RESTRICTION_UPDATE(4),
     STAY_CREATE(5),
-    STAY_END(6);
+    STAY_END(6),
+    DIET_UPDATE(7);
 
     private final int value;
 

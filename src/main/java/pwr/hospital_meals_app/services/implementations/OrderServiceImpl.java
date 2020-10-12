@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import pwr.hospital_meals_app.dto.base.OrderDto;
 import pwr.hospital_meals_app.persistance.entities.OrderEntity;
 import pwr.hospital_meals_app.persistance.repositories.EventRepository;
-import pwr.hospital_meals_app.persistance.repositories.LogRepository;
 import pwr.hospital_meals_app.persistance.repositories.LoginRepository;
 import pwr.hospital_meals_app.persistance.repositories.OrderRepository;
 import pwr.hospital_meals_app.services.definitions.BaseLoggingCrudService;
@@ -26,6 +25,8 @@ public class OrderServiceImpl
                             LogService logService,
                             EventMapper eventMapper,
                             EventRepository eventRepository) {
-        super(repository, mapper, loginRepository, logService, eventRepository, eventMapper , EVENT_TYPE.ORDER_CREATE.getValue(), EVENT_TYPE.ORDER_UPDATE.getValue());
+        super(repository, mapper, loginRepository, logService,
+                eventRepository, eventMapper, EVENT_TYPE.ORDER_CREATE.getValue(),
+                EVENT_TYPE.ORDER_UPDATE.getValue());
     }
 }
