@@ -62,7 +62,7 @@ public abstract class BaseLoggingCrudService<
     }
 
 
-    @Override
+   @Override
     public T saveAndLog(T dto, String token) {
 
         T dataEntity = save(dto);

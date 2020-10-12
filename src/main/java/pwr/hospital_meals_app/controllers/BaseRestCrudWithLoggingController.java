@@ -31,7 +31,7 @@ public abstract class BaseRestCrudWithLoggingController<
         ID extends Serializable,
         E extends Persistable<ID>,
         S extends Specification<E>>
-        extends BaseRestCrudController<T, ID> {
+        extends BaseSpecificationCrudController<T, ID, E, S> {
 
 
     private final LoggingCrudService<T, E, ID> service;

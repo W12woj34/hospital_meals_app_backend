@@ -23,16 +23,16 @@ INSERT INTO Person(id, first_name, last_name, birth_date, pesel) VALUES (22, 'Ni
 INSERT INTO Person(id, first_name, last_name, birth_date, pesel) VALUES (23, 'Wioletta', 'Tomaszewska', '1950-05-05', 70050714103);
 INSERT INTO Person(id, first_name, last_name, birth_date, pesel) VALUES (24, 'Franciszek', 'Szymański', '1942-06-24', 42062456614);
 INSERT INTO Person(id, first_name, last_name, birth_date, pesel) VALUES (25, 'Świętosław', 'Ostrowski', '1990-12-04', 90120489915);
-INSERT INTO Login(id, username, password) VALUES (1, 'kowalski-jan01', '$2a$10$X9qHKwCiDdyDQh1k1vQxc-7ejBAKKq/tcBFcQczYnt6/uGkJDEF/a');
-INSERT INTO Login(id, username, password) VALUES (2, 'nowicki-dariusz01', '$2a$10$fheUtyy5gSEz0tnd-RhfROUe7ds69NZkmjSvzVSq0I736M9NKI63i');
-INSERT INTO Login(id, username, password) VALUES (3, 'borkowski-bozydar01', '$2a$10$QDBXt-KG/TPNQ2DBqniK8uSQU-nPZTYCtg3MZa7bklm7bd57GIOiy');
-INSERT INTO Login(id, username, password) VALUES (4, 'ostrowski-wlodzimierz01', '$2a$10$fAW7CuYdYQE-lZ24kMikR-TJM75A1QbH5Gkr0-FGhWoNfEyijiria');
-INSERT INTO Login(id, username, password) VALUES (5, 'szczepanski-bartumil01', '$2a$10$F2mEM2wYaEd7kXOwE5v9keuI/40MCCDI3Y9Zi7uZSPBcGuFAyUTxC');
-INSERT INTO Login(id, username, password) VALUES (6, 'zielinski-przemko01', '$2a$10$tTwZWfOHhM5m4IiUWkb0HOg5Y0dpdK1rjuf9ABVR3IVut190UPz0S');
-INSERT INTO Login(id, username, password) VALUES (7, 'pawlowski-gustaw01', '$2a$10$0lrHFSDGL8ckzDbz7Njt/u9W6COH6ofxSl4l1XdvuwcGAXTXSeQAC');
-INSERT INTO Login(id, username, password) VALUES (8, 'kalinowska-adrianna01', '$2a$10$roa7orjwfVUZEuFNlO7nHejc0KCUvIHGk5rlLsO-PWE4/P3I3Ifoi');
-INSERT INTO Login(id, username, password) VALUES (9, 'zielinska-michalina01', '$2a$10$sUegw6ig8hydzu78Bx6NSe/hFYIAdUV75kGA9T6744ogZMQIZyr6m');
-INSERT INTO Login(id, username, password) VALUES (10, 'sokolowska-beata01', '$2a$10$Y2haWpd9k4dFwCDFAzWNxOIV9/gbfTsPB3LIO2s0SK/Xq8sHNHR-C');
+INSERT INTO Login(id, username, password) VALUES (1, 'kowalski-jan01', '$2a$10$U2qg0GKCKO4YHhRTxW5Q0.lqm04RJN67iP2B/ibp6XmjTR8uKohWm'); -- tajnehaslo12
+INSERT INTO Login(id, username, password) VALUES (2, 'nowicki-dariusz01', '$2a$10$SyHle6LGE0t.sIalLyyqseZMw1hLstDeZie/DRGbGRa4MdEK3qwze'); -- password321
+INSERT INTO Login(id, username, password) VALUES (3, 'borkowski-bozydar01', '$2a$10$GjCIRIX6ZlFj6WTEus3fN.lqYeBj/PgxtoZi.eGhXrJ2xTLVP2O3y'); -- klawiatura43
+INSERT INTO Login(id, username, password) VALUES (4, 'ostrowski-wlodzimierz01', '$2a$10$TnEJ1nRakheHkJaz7ALkKOMe0tVaQUZnYoDEFgc5ftDM7wKppdyqG'); -- qwertyuiop0
+INSERT INTO Login(id, username, password) VALUES (5, 'szczepanski-bartumil01', '$2a$10$jjBE50NFFFDh8oRubV55D.8gS3JwG64dga7AK.nSJJ/g9ipdJvHWW'); -- monitorAOC
+INSERT INTO Login(id, username, password) VALUES (6, 'zielinski-przemko01', '$2a$10$HEf6TYJ0zAvRJs1TUqL0SOpCJ0Zel8K7/ZKMCP2dnvLTs9A4kcsOa'); -- stonoga100
+INSERT INTO Login(id, username, password) VALUES (7, 'pawlowski-gustaw01', '$2a$10$M.VgNCI2EznOROlY9Xq84OHM6mGLoSUTxr.t/Ia252HFwWOMl/Du.'); -- dlugopis5
+INSERT INTO Login(id, username, password) VALUES (8, 'kalinowska-adrianna01', '$2a$10$atI0iNKUSEzwL/uFUr2iWuUTnKo9/KhYIQ2l/vaeOu4vgnTG.U9nq'); -- 70000000
+INSERT INTO Login(id, username, password) VALUES (9, 'zielinska-michalina01', '$2a$10$UEKgCTuQChVuM5SnEHe5we6zpCraK2jX2HpfD6ZwVCEFBAzfZ3Kjm'); -- XiaomiLepsze
+INSERT INTO Login(id, username, password) VALUES (10, 'sokolowska-beata01', '$2a$10$EunbVy9DhRv5D0dZb6B2sOY2RrVfTltE1SaOh036Rci8PUNEqtmc2'); -- superHaslo21
 INSERT INTO Employee(id, login_id) VALUES (1, 1);
 INSERT INTO Employee(id, login_id) VALUES (2, 2);
 INSERT INTO Employee(id, login_id) VALUES (3, 3);

@@ -65,9 +65,7 @@ public class LoginController
             @PathVariable Integer id,
             @RequestParam String newPassword) {
 
-        @Valid PasswordChangeDto dto = new PasswordChangeDto(service.getUserPassword(id), newPassword);
-
-        service.changePassword(id, dto);
+        service.changePasswordForce(id, newPassword);
 
     }
 }

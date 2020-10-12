@@ -9,7 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pwr.hospital_meals_app.dto.additionals.PasswordChangeDto;
 import pwr.hospital_meals_app.dto.base.LoginDto;
+import pwr.hospital_meals_app.persistance.entities.EmployeeEntity;
 import pwr.hospital_meals_app.persistance.entities.LoginEntity;
+import pwr.hospital_meals_app.persistance.repositories.EmployeeRepository;
 import pwr.hospital_meals_app.persistance.repositories.LoginRepository;
 import pwr.hospital_meals_app.services.definitions.BaseCrudService;
 import pwr.hospital_meals_app.services.definitions.LoginService;
@@ -28,14 +30,17 @@ public class LoginServiceImpl
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserDetailsServiceImpl userDetailsService;
+    private final EmployeeRepository employeeRepository;
 
     public LoginServiceImpl(LoginRepository repository,
                             LoginMapper mapper,
                             BCryptPasswordEncoder bCryptPasswordEncoder,
-                            UserDetailsServiceImpl userDetailsService) {
+                            UserDetailsServiceImpl userDetailsService,
+                            EmployeeRepository employeeRepository) {
         super(repository, mapper);
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userDetailsService = userDetailsService;
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
@@ -52,6 +57,19 @@ public class LoginServiceImpl
         } else {
             throw new SecurityException();
         }
+    }
+
+    @Override
+    public void changePasswordForce(Integer id, String newPassword) {
+
+        Optional<EmployeeEntity> employee = employeeRepository.findById(id);
+        if (employee.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        LoginEntity user = employee.get().getLogin();
+
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        repository.save(user);
     }
 
     @Override
@@ -86,15 +104,6 @@ public class LoginServiceImpl
         return bCryptPasswordEncoder.encode(password);
     }
 
-    @Override
-    public String getUserPassword(Integer id) {
-
-        if(repository.findById(id).isPresent()){
-            return repository.findById(id).get().getPassword();
-        }
-        throw new EntityNotFoundException();
-
-    }
 
     private String getUsernameFromRefreshToken(String refreshToken) {
 
