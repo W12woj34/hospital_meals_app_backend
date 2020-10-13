@@ -1,12 +1,15 @@
 package pwr.hospital_meals_app.services.implementations;
 
 import org.springframework.stereotype.Service;
+import pwr.hospital_meals_app.dto.additionals.PatientMealOrderDto;
 import pwr.hospital_meals_app.dto.base.MealDto;
 import pwr.hospital_meals_app.persistance.entities.MealEntity;
 import pwr.hospital_meals_app.persistance.repositories.MealRepository;
 import pwr.hospital_meals_app.services.definitions.BaseSpecificationCrudService;
 import pwr.hospital_meals_app.services.definitions.MealService;
 import pwr.hospital_meals_app.services.mappers.MealMapper;
+
+import java.util.List;
 
 @Service
 public class MealServiceImpl
@@ -15,5 +18,15 @@ public class MealServiceImpl
 
     public MealServiceImpl(MealRepository repository, MealMapper mapper) {
         super(repository, mapper);
+    }
+
+    @Override
+    public List<PatientMealOrderDto> getPatientOrders(Integer ward) {
+        return null;
+    }
+
+    @Override
+    public void setPatientOrders(List<PatientMealOrderDto> order) {
+
     }
 }
