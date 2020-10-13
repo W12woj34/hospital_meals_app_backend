@@ -33,6 +33,10 @@ public class PatientMealOrderDto {
     private Long pesel;
 
     @NotNull
+    @Size(max = 255)
+    private String ward;
+
+    @NotNull
     private boolean breakfast;
 
     @NotNull
