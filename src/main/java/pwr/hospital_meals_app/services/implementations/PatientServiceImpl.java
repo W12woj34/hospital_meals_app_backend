@@ -15,10 +15,7 @@ import pwr.hospital_meals_app.services.definitions.PatientService;
 import pwr.hospital_meals_app.services.mappers.PatientMapper;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,7 +31,7 @@ public class PatientServiceImpl
     @Override
     public Page<PatientDataDto> getPatientsData(Pageable pageable) {
 
-        List<PatientDataDto> dtos = new ArrayList<>();
+        List<PatientDataDto> dtos = new LinkedList<>();
         Page<PatientEntity> patients = repository.findAll(pageable);
 
         for (PatientEntity patient : patients) {
@@ -49,7 +46,7 @@ public class PatientServiceImpl
     @Override
     public List<PatientDataDto> getPatientsData() {
 
-        List<PatientDataDto> dtos = new ArrayList<>();
+        List<PatientDataDto> dtos = new LinkedList<>();
         List<PatientEntity> patients = repository.findAll();
 
         for (PatientEntity patient : patients) {
@@ -64,7 +61,7 @@ public class PatientServiceImpl
     @Override
     public List<PatientDataDto> getPatientsDataFromWard(Integer ward) {
 
-        List<PatientDataDto> dtos = new ArrayList<>();
+        List<PatientDataDto> dtos = new LinkedList<>();
         List<PatientEntity> patients = repository.findAll();
 
         for (PatientEntity patient : patients) {

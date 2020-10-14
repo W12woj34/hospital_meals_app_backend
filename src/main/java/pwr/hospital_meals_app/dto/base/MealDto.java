@@ -20,11 +20,6 @@ public class MealDto extends BaseInheritedIdDto<Integer> {
     private String additionalInfo;
 
     @NotNull
-    @Min(1)
-    @Max(10)
-    private Integer option;
-
-    @NotNull
     private LocalDate date;
 
     @NotNull

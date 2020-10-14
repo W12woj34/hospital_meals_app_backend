@@ -24,9 +24,6 @@ public class MealEntity extends AbstractPersistable<Integer> {
     @Column(name = "additional_info", nullable = true)
     private String additionalInfo;
 
-    @Column(name = "option", nullable = false)
-    private int option;
-
     @Column(name = "date", nullable = false)
     private LocalDate date;
 

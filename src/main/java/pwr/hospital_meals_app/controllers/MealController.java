@@ -29,9 +29,10 @@ public class MealController
     }
 
     @PostMapping(RestMappings.MEAL_ORDER)
-    public ResponseEntity<Void> setMealsOrderData(@RequestBody List<PatientMealOrderDto> dtos) {
+    public ResponseEntity<Void> setMealsOrderData(@RequestHeader("Authorization") String token,
+                                                  @RequestBody List<PatientMealOrderDto> dtos) {
 
-        service.setPatientOrders(dtos);
+        service.setPatientOrders(dtos, token);
         return ResponseEntity.ok().build();
     }
 }

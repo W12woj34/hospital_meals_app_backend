@@ -13,10 +13,7 @@ import pwr.hospital_meals_app.services.definitions.EmployeeService;
 import pwr.hospital_meals_app.services.mappers.EmployeeMapper;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl
@@ -45,7 +42,7 @@ public class EmployeeServiceImpl
     @Override
     public Page<EmployeeDataDto> getEmployeesData(Pageable pageable) {
 
-        List<EmployeeDataDto> dtos = new ArrayList<>();
+        List<EmployeeDataDto> dtos = new LinkedList<>();
         Page<EmployeeEntity> employees = repository.findAll(pageable);
 
         for (EmployeeEntity employee : employees) {
@@ -58,7 +55,7 @@ public class EmployeeServiceImpl
     @Override
     public List<EmployeeDataDto> getEmployeesData() {
 
-        List<EmployeeDataDto> dtos = new ArrayList<>();
+        List<EmployeeDataDto> dtos = new LinkedList<>();
         List<EmployeeEntity> employees = repository.findAll();
 
         for (EmployeeEntity employee : employees) {

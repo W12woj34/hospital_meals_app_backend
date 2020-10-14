@@ -11,5 +11,5 @@ public interface MealService extends SpecificationCrudService<MealDto, MealEntit
 
     List<PatientMealOrderDto> getPatientOrders(Integer ward);
 
-    void setPatientOrders(List<PatientMealOrderDto> order);
+    void setPatientOrders(List<PatientMealOrderDto> orders, String token);
 }

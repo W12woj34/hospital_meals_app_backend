@@ -52,7 +52,6 @@ CREATE TABLE Meal
 (
     id              int NOT NULL,
     additional_info varchar(255),
-    `option`        int NOT NULL,
     `date`          date    NOT NULL,
     type_id         int NOT NULL,
     diet_id         int NOT NULL,
