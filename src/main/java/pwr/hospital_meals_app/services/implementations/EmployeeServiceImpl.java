@@ -1,5 +1,8 @@
 package pwr.hospital_meals_app.services.implementations;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +18,9 @@ import pwr.hospital_meals_app.services.mappers.EmployeeMapper;
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
+import static pwr.hospital_meals_app.security.SecurityConstants.SECRET_AUTH;
+import static pwr.hospital_meals_app.security.SecurityConstants.TOKEN_PREFIX;
+
 @Service
 public class EmployeeServiceImpl
         extends BasePersonalCrudService<EmployeeDto, EmployeeEntity, EmployeeRepository>
@@ -24,6 +30,7 @@ public class EmployeeServiceImpl
     private final WardNurseRepository wardNurseRepository;
     private final DietitianRepository dietitianRepository;
     private final PatientMovementRepository patientMovementRepository;
+    private final LoginRepository loginRepository;
 
     public EmployeeServiceImpl(EmployeeRepository repository,
                                EmployeeMapper mapper,
@@ -37,6 +44,7 @@ public class EmployeeServiceImpl
         this.wardNurseRepository = wardNurseRepository;
         this.dietitianRepository = dietitianRepository;
         this.patientMovementRepository = patientMovementRepository;
+        this.loginRepository = loginRepository;
     }
 
     @Override
@@ -59,7 +67,7 @@ public class EmployeeServiceImpl
         List<EmployeeEntity> employees = repository.findAll();
 
         for (EmployeeEntity employee : employees) {
-                dtos.add(createEmployeeDataDto(employee));
+            dtos.add(createEmployeeDataDto(employee));
         }
 
         return dtos;
@@ -75,6 +83,11 @@ public class EmployeeServiceImpl
 
         return createEmployeeDataDto(employee.get());
 
+    }
+
+    @Override
+    public EmployeeDataDto getEmployeeDataPersonal(String token) {
+        return getEmployeeData(resolveIdFromToken(token));
     }
 
     private EmployeeDataDto createEmployeeDataDto(EmployeeEntity employee) {
@@ -114,5 +127,17 @@ public class EmployeeServiceImpl
         }
 
         throw new EntityNotFoundException();
+    }
+
+    private Integer resolveIdFromToken(String token) {
+
+        Jws<Claims> claimsJws =
+                Jwts.parser()
+                        .setSigningKey(SECRET_AUTH.getBytes())
+                        .parseClaimsJws(token.replace(TOKEN_PREFIX, ""));
+
+        return Optional.ofNullable(loginRepository
+                .findByUsername(claimsJws.getBody().getSubject()).getEmployee().getId())
+                .orElseThrow(EntityNotFoundException::new);
     }
 }

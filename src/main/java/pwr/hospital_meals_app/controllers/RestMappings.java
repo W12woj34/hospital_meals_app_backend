@@ -24,7 +24,7 @@ public final class RestMappings {
     public static final String PATIENT = "/patients";
     public static final String PATIENT_DIET = "/patients-diets";
     public static final String PATIENT_MOVEMENT = "/patient-movements";
-    public static final String PERSON = "/persons";
+    public static final String PERSON = "/people";
     public static final String RESTRICTION_STATUS = "/restriction-statuses";
     public static final String STAY = "/stays";
     public static final String WARD = "/wards";

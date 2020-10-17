@@ -20,10 +20,11 @@ public class PatientController
         extends BaseSpecificationCrudController<
         PatientDto, Integer, PatientEntity, PatientSpecification> {
 
-    PatientService service;
+    private final PatientService service;
 
     public PatientController(PatientService service) {
         super(service);
+        this.service = service;
     }
 
 
@@ -38,7 +39,7 @@ public class PatientController
     }
 
     @GetMapping(RestMappings.DATA_WARD + RestMappings.ID)
-    public List<PatientDataDto> getPatientDataWard(@PathVariable Integer id) {
+    public Page<PatientDataDto> getPatientsDataWard(@PathVariable Integer id) {
         return service.getPatientsDataFromWard(id);
     }
 }

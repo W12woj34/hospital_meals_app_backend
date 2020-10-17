@@ -3,6 +3,8 @@ package pwr.hospital_meals_app.services.implementations;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import pwr.hospital_meals_app.dto.additionals.PatientMealOrderDto;
 import pwr.hospital_meals_app.dto.base.MealDto;
@@ -80,7 +82,7 @@ public class MealServiceImpl
     }
 
     @Override
-    public List<PatientMealOrderDto> getPatientOrders(Integer ward) {
+    public Page<PatientMealOrderDto> getPatientOrders(Integer ward) {
 
         List<PatientMealOrderDto> dtos = new LinkedList<>();
         List<StayEntity> stays = stayRepository
@@ -94,7 +96,7 @@ public class MealServiceImpl
             dtos.add(createPatientMealOrderDto(patient));
         }
 
-        return dtos;
+        return new PageImpl<>(dtos);
     }
 
     @Override
@@ -123,10 +125,18 @@ public class MealServiceImpl
         PatientMealOrderDto dto = new PatientMealOrderDto();
 
         dto.setId(patient.getId());
-        dto.setFirstName(patient.getLastName());
+        dto.setFirstName(patient.getFirstName());
         dto.setLastName(patient.getLastName());
         dto.setBirthDate(patient.getBirthDate());
         dto.setPesel(patient.getPesel());
+
+        dto.setWard(patient.getStays().stream()
+                .filter(s -> !s.isArchived() && s.getReleaseDate() == null)
+                .map(s -> s.getWard().getName())
+                .findFirst()
+                .orElseThrow(EntityNotFoundException::new)
+        );
+
 
         List<MealEntity> patientMeals = patient.getOrders().stream()
                 .map(OrderEntity::getMeal)

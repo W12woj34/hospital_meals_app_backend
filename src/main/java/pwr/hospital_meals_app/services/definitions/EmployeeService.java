@@ -15,4 +15,6 @@ public interface EmployeeService extends PersonalDataService<EmployeeDto> {
     List<EmployeeDataDto> getEmployeesData();
 
     EmployeeDataDto getEmployeeData(Integer id);
+
+    EmployeeDataDto getEmployeeDataPersonal(String token);
 }

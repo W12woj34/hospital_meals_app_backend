@@ -35,7 +35,8 @@ public class LoginController
     }
 
     @PostMapping(RestMappings.REFRESH_TOKEN)
-    public void refresh(@RequestHeader("Refresh") String refreshToken, HttpServletResponse response) {
+    public void refresh(@RequestBody String refreshToken,
+                        HttpServletResponse response) {
         response.addHeader(HEADER_STRING_AUTH, TOKEN_PREFIX + service.refresh(refreshToken));
     }
 

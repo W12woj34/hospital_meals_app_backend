@@ -59,7 +59,7 @@ public class PatientServiceImpl
     }
 
     @Override
-    public List<PatientDataDto> getPatientsDataFromWard(Integer ward) {
+    public Page<PatientDataDto> getPatientsDataFromWard(Integer ward) {
 
         List<PatientDataDto> dtos = new LinkedList<>();
         List<PatientEntity> patients = repository.findAll();
@@ -70,7 +70,7 @@ public class PatientServiceImpl
                 dtos.add(dto);
             }
         }
-        return dtos;
+        return new PageImpl<>(dtos);
     }
 
     @Override
@@ -91,6 +91,7 @@ public class PatientServiceImpl
         List<PatientDietEntity> patientActualDiet = patient.getPatientDiets().stream()
                 .filter(p -> p.getEndDate() == null).collect(Collectors.toList());
 
+
         if (patientActualDiet.isEmpty()) {
             dto.setDiet("");
         } else if (patientActualDiet.size() > 1) {
@@ -102,17 +103,18 @@ public class PatientServiceImpl
         List<StayEntity> patientStay = patient.getStays().stream()
                 .filter(s -> !s.isArchived()).collect(Collectors.toList());
 
+        if(ward != null){
+            patientStay = patientStay.stream()
+                    .filter(s -> Objects.equals(s.getWard().getId(), ward)).collect(Collectors.toList());
+        }
+
+
         if (patientStay.isEmpty()) {
             return null;
         } else if (patientStay.size() > 1) {
             return null;
         } else {
-            if (Objects.equals(patientStay.get(0).getWard().getId(), ward)) {
                 dto.setWard(patientStay.get(0).getWard().getName());
-            } else {
-                return null;
-            }
-
         }
 
         dto.setId(patient.getId());

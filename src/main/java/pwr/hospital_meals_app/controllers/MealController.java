@@ -1,5 +1,6 @@
 package pwr.hospital_meals_app.controllers;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pwr.hospital_meals_app.dto.additionals.PatientMealOrderDto;
@@ -16,15 +17,16 @@ public class MealController
         extends BaseSpecificationCrudController<
         MealDto, Integer, MealEntity, MealSpecification> {
 
-    MealService service;
+    private final MealService service;
 
     public MealController(MealService service) {
         super(service);
+        this.service = service;
     }
 
 
     @GetMapping(RestMappings.MEAL_ORDER + RestMappings.ID)
-    public List<PatientMealOrderDto> getMealsOrderData(@PathVariable Integer id) {
+    public Page<PatientMealOrderDto> getMealsOrderData(@PathVariable Integer id) {
         return service.getPatientOrders(id);
     }
 
