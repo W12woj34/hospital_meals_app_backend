@@ -14,6 +14,7 @@ import pwr.hospital_meals_app.persistance.entities.*;
 import pwr.hospital_meals_app.persistance.repositories.*;
 import pwr.hospital_meals_app.services.definitions.BaseSpecificationCrudService;
 import pwr.hospital_meals_app.services.definitions.MealService;
+import pwr.hospital_meals_app.services.definitions.OrderService;
 import pwr.hospital_meals_app.services.mappers.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -38,7 +39,6 @@ public class MealServiceImpl
     private final WardRepository wardRepository;
     private final WardNurseRepository wardNurseRepository;
     private final OrderStatusRepository orderStatusRepository;
-    private final OrderRepository orderRepository;
     private final OrderStatusMapper orderStatusMapper;
     private final OrderMapper orderMapper;
     private final DietMapper dietMapper;
@@ -47,6 +47,8 @@ public class MealServiceImpl
     private final MealTypeMapper mealTypeMapper;
     private final MealTypeRepository mealTypeRepository;
     private final LoginRepository loginRepository;
+    private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
     public MealServiceImpl(MealRepository repository,
                            MealMapper mapper,
@@ -55,14 +57,16 @@ public class MealServiceImpl
                            WardRepository wardRepository,
                            WardNurseRepository wardNurseRepository,
                            OrderStatusRepository orderStatusRepository,
-                           OrderRepository orderRepository,
                            OrderStatusMapper orderStatusMapper,
                            OrderMapper orderMapper,
                            DietMapper dietMapper,
                            MealMapper mealMapper,
-                           MealRepository mealRepository, MealTypeMapper mealTypeMapper,
+                           MealRepository mealRepository,
+                           MealTypeMapper mealTypeMapper,
                            MealTypeRepository mealTypeRepository,
-                           LoginRepository loginRepository) {
+                           LoginRepository loginRepository,
+                           OrderService orderService,
+                           OrderRepository orderRepository) {
 
         super(repository, mapper);
         this.patientRepository = patientRepository;
@@ -70,7 +74,6 @@ public class MealServiceImpl
         this.wardRepository = wardRepository;
         this.wardNurseRepository = wardNurseRepository;
         this.orderStatusRepository = orderStatusRepository;
-        this.orderRepository = orderRepository;
         this.orderStatusMapper = orderStatusMapper;
         this.orderMapper = orderMapper;
         this.dietMapper = dietMapper;
@@ -79,11 +82,14 @@ public class MealServiceImpl
         this.mealTypeMapper = mealTypeMapper;
         this.mealTypeRepository = mealTypeRepository;
         this.loginRepository = loginRepository;
+        this.orderService = orderService;
+        this.orderRepository = orderRepository;
     }
 
     @Override
-    public Page<PatientMealOrderDto> getPatientOrders(Integer ward) {
+    public Page<PatientMealOrderDto> getPatientOrders(String token) {
 
+        Integer ward = resolveWardIdFromToken(token);
         List<PatientMealOrderDto> dtos = new LinkedList<>();
         List<StayEntity> stays = stayRepository
                 .findByArchivedAndWard(false,
@@ -104,7 +110,7 @@ public class MealServiceImpl
 
         Integer nurseId = resolveIdFromToken(token);
         for (PatientMealOrderDto order : orders) {
-            savePatientMealOrderDto(order, nurseId);
+            savePatientMealOrderDto(order, nurseId, token);
         }
     }
 
@@ -118,6 +124,24 @@ public class MealServiceImpl
         return Optional.ofNullable(loginRepository
                 .findByUsername(claimsJws.getBody().getSubject()).getEmployee().getId())
                 .orElseThrow(EntityNotFoundException::new);
+    }
+
+    private Integer resolveWardIdFromToken(String token) {
+
+        Jws<Claims> claimsJws =
+                Jwts.parser()
+                        .setSigningKey(SECRET_AUTH.getBytes())
+                        .parseClaimsJws(token.replace(TOKEN_PREFIX, ""));
+
+
+        Integer nurseId = Optional.ofNullable(loginRepository
+                .findByUsername(claimsJws.getBody().getSubject()).getEmployee().getId())
+                .orElseThrow(EntityNotFoundException::new);
+
+        return wardNurseRepository.findById(nurseId)
+                .orElseThrow(EntityNotFoundException::new)
+                .getWard()
+                .getId();
     }
 
     private PatientMealOrderDto createPatientMealOrderDto(PatientEntity patient) {
@@ -168,7 +192,7 @@ public class MealServiceImpl
         return dto;
     }
 
-    private void savePatientMealOrderDto(PatientMealOrderDto order, Integer nurseId) {
+    private void savePatientMealOrderDto(PatientMealOrderDto order, Integer nurseId, String token) {
 
 
         PatientEntity patient = patientRepository.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
@@ -179,33 +203,43 @@ public class MealServiceImpl
                 .collect(Collectors.toList());
 
 
-        saveDtoToDatabase(nurseId, order, "Śniadanie", patient, patientMeals);
-        saveDtoToDatabase(nurseId, order, "Obiad", patient, patientMeals);
-        saveDtoToDatabase(nurseId, order, "Kolacja", patient, patientMeals);
+        saveDtoToDatabase(nurseId, order, "Śniadanie", patient, patientMeals, token);
+        saveDtoToDatabase(nurseId, order, "Obiad", patient, patientMeals, token);
+        saveDtoToDatabase(nurseId, order, "Kolacja", patient, patientMeals, token);
     }
 
     private void saveDtoToDatabase(Integer nurseId,
                                    PatientMealOrderDto order,
                                    String mealTypeName,
                                    PatientEntity patient,
-                                   List<MealEntity> patientMeals) {
+                                   List<MealEntity> patientMeals,
+                                   String token) {
 
         Optional<MealEntity> mealType = patientMeals.stream()
                 .filter(m -> m.getType().getName().equals(mealTypeName))
                 .findFirst();
 
         if (mealType.isPresent()) {
-            OrderEntity breakfastOrder = mealType.get().getOrder();
-            breakfastOrder.setNurse(wardNurseRepository.findById(nurseId)
+            OrderEntity mealOrder = mealType.get().getOrder();
+            mealOrder.setNurse(wardNurseRepository.findById(nurseId)
                     .orElseThrow(EntityNotFoundException::new));
-            breakfastOrder.setTimestamp(new Timestamp(System.currentTimeMillis()));
-            if (order.isBreakfast()) {
-                breakfastOrder.setStatus(orderStatusRepository.findById(3).orElseThrow(EntityNotFoundException::new));
+            mealOrder.setTimestamp(new Timestamp(System.currentTimeMillis()).toString());
+            if ((order.isBreakfast() && mealTypeName.equals("Śniadanie")) ||
+                    (order.isLunch() && mealTypeName.equals("Obiad")) ||
+                    (order.isSupper() && mealTypeName.equals("Kolacja"))) {
+                mealOrder.setStatus(orderStatusRepository.findById(3).orElseThrow(EntityNotFoundException::new));
             } else {
-                breakfastOrder.setStatus(orderStatusRepository.findById(4).orElseThrow(EntityNotFoundException::new));
+                mealOrder.setStatus(orderStatusRepository.findById(4).orElseThrow(EntityNotFoundException::new));
             }
-            orderRepository.save(breakfastOrder);
+            orderService.updateByIdAndLog(orderMapper.mapToDto(mealOrder), mealOrder.getId(), token);
+
         } else {
+
+            if ((!order.isBreakfast() && mealTypeName.equals("Śniadanie")) ||
+                    (!order.isLunch() && mealTypeName.equals("Obiad")) ||
+                    (!order.isSupper() && mealTypeName.equals("Kolacja"))) {
+                return;
+            }
 
             OrderDto orderDto = new OrderDto();
             orderDto.setNurseId(nurseId);
@@ -213,8 +247,8 @@ public class MealServiceImpl
             orderDto.setStatus(orderStatusRepository.findById(1).stream()
                     .map(orderStatusMapper::mapToDto).findFirst()
                     .orElseThrow(EntityNotFoundException::new));
-            orderDto.setTimestamp(new Timestamp(System.currentTimeMillis()));
-            orderDto = orderMapper.mapToDto(orderRepository.save(orderMapper.mapToEntity(orderDto)));
+            orderDto.setTimestamp(new Timestamp(System.currentTimeMillis()).toString());
+            orderDto = orderService.saveAndLog(orderDto, token);
             MealDto mealDto = new MealDto();
             mealDto.setDate(LocalDate.now());
 
@@ -222,10 +256,13 @@ public class MealServiceImpl
                     .filter(pd -> pd.getEndDate() == null)
                     .findFirst().orElseThrow(EntityNotFoundException::new)
                     .getDiet()));
-            MealTypeDto mealTypeDto = mealTypeMapper.mapToDto(mealTypeRepository.findById(1).orElseThrow(EntityNotFoundException::new));
+            MealTypeDto mealTypeDto = mealTypeMapper.mapToDto(mealTypeRepository.findByName(mealTypeName));
             mealDto.setType(mealTypeDto);
-            mealDto.setId(orderDto.getId());
-            mealRepository.save(mealMapper.mapToEntity(mealDto));
+            mealDto.setAdditionalInfo("");
+            MealEntity mealEntity = mealMapper.mapToEntity(mealDto);
+            mealEntity.setOrder(orderRepository.findById(orderDto.getId())
+                    .orElseThrow(EntityNotFoundException::new));
+            mealRepository.save(mealEntity);
         }
     }
 }

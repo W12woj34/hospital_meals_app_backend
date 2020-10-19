@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +12,7 @@ import java.sql.Timestamp;
 public class LogDto extends BaseGeneratedIdDto<Integer> {
 
     @NotNull
-    private Timestamp timestamp;
+    private String timestamp;
 
     @NotNull
     private Integer modifiedEntityId;

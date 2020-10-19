@@ -15,7 +15,7 @@ public interface PatientService extends SpecificationCrudService<PatientDto, Pat
 
     List<PatientDataDto> getPatientsData();
 
-    Page<PatientDataDto> getPatientsDataFromWard(Integer ward);
+    Page<PatientDataDto> getPatientsDataFromWard(String token);
 
     PatientDataDto getPatientData(Integer id);
 

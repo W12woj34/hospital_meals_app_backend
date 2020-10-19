@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +21,6 @@ public class OrderDto extends BaseGeneratedIdDto<Integer> {
     private OrderStatusDto status;
 
     @NotNull
-    private Timestamp timestamp;
+    private String timestamp;
 
 }

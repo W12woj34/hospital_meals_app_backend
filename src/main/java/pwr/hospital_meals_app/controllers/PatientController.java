@@ -2,10 +2,7 @@ package pwr.hospital_meals_app.controllers;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pwr.hospital_meals_app.dto.additionals.PatientDataDto;
 import pwr.hospital_meals_app.dto.base.PatientDto;
 import pwr.hospital_meals_app.persistance.entities.PatientEntity;
@@ -38,8 +35,8 @@ public class PatientController
         return service.getPatientData(id);
     }
 
-    @GetMapping(RestMappings.DATA_WARD + RestMappings.ID)
-    public Page<PatientDataDto> getPatientsDataWard(@PathVariable Integer id) {
-        return service.getPatientsDataFromWard(id);
+    @GetMapping(RestMappings.DATA_WARD)
+    public Page<PatientDataDto> getPatientsDataWard(@RequestHeader("Authorization") String token) {
+        return service.getPatientsDataFromWard(token);
     }
 }

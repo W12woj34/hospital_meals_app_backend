@@ -1,5 +1,8 @@
 package pwr.hospital_meals_app.services.implementations;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +12,9 @@ import pwr.hospital_meals_app.dto.base.PatientDto;
 import pwr.hospital_meals_app.persistance.entities.PatientDietEntity;
 import pwr.hospital_meals_app.persistance.entities.PatientEntity;
 import pwr.hospital_meals_app.persistance.entities.StayEntity;
+import pwr.hospital_meals_app.persistance.repositories.LoginRepository;
 import pwr.hospital_meals_app.persistance.repositories.PatientRepository;
+import pwr.hospital_meals_app.persistance.repositories.WardNurseRepository;
 import pwr.hospital_meals_app.services.definitions.BaseSpecificationCrudService;
 import pwr.hospital_meals_app.services.definitions.PatientService;
 import pwr.hospital_meals_app.services.mappers.PatientMapper;
@@ -18,14 +23,25 @@ import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static pwr.hospital_meals_app.security.SecurityConstants.SECRET_AUTH;
+import static pwr.hospital_meals_app.security.SecurityConstants.TOKEN_PREFIX;
+
 @Service
 public class PatientServiceImpl
         extends BaseSpecificationCrudService<PatientDto, PatientEntity, Integer, PatientRepository>
         implements PatientService {
 
+
+    private final LoginRepository loginRepository;
+    private final WardNurseRepository wardNurseRepository;
+
     public PatientServiceImpl(PatientRepository repository,
-                              PatientMapper mapper) {
+                              PatientMapper mapper,
+                              LoginRepository loginRepository,
+                              WardNurseRepository wardNurseRepository) {
         super(repository, mapper);
+        this.loginRepository = loginRepository;
+        this.wardNurseRepository = wardNurseRepository;
     }
 
     @Override
@@ -59,8 +75,9 @@ public class PatientServiceImpl
     }
 
     @Override
-    public Page<PatientDataDto> getPatientsDataFromWard(Integer ward) {
+    public Page<PatientDataDto> getPatientsDataFromWard(String token) {
 
+        Integer ward = resolveWardIdFromToken(token);
         List<PatientDataDto> dtos = new LinkedList<>();
         List<PatientEntity> patients = repository.findAll();
 
@@ -72,6 +89,26 @@ public class PatientServiceImpl
         }
         return new PageImpl<>(dtos);
     }
+
+    private Integer resolveWardIdFromToken(String token) {
+
+        Jws<Claims> claimsJws =
+                Jwts.parser()
+                        .setSigningKey(SECRET_AUTH.getBytes())
+                        .parseClaimsJws(token.replace(TOKEN_PREFIX, ""));
+
+
+        Integer nurseId = Optional.ofNullable(loginRepository
+                .findByUsername(claimsJws.getBody().getSubject()).getEmployee().getId())
+                .orElseThrow(EntityNotFoundException::new);
+
+        return wardNurseRepository.findById(nurseId)
+                .orElseThrow(EntityNotFoundException::new)
+                .getWard()
+                .getId();
+
+    }
+
 
     @Override
     public PatientDataDto getPatientData(Integer id) {
@@ -103,7 +140,7 @@ public class PatientServiceImpl
         List<StayEntity> patientStay = patient.getStays().stream()
                 .filter(s -> !s.isArchived()).collect(Collectors.toList());
 
-        if(ward != null){
+        if (ward != null) {
             patientStay = patientStay.stream()
                     .filter(s -> Objects.equals(s.getWard().getId(), ward)).collect(Collectors.toList());
         }
@@ -114,7 +151,8 @@ public class PatientServiceImpl
         } else if (patientStay.size() > 1) {
             return null;
         } else {
-                dto.setWard(patientStay.get(0).getWard().getName());
+            dto.setAdmissionDate(patientStay.get(0).getAdmissionDate());
+            dto.setWard(patientStay.get(0).getWard().getName());
         }
 
         dto.setId(patient.getId());
@@ -122,6 +160,7 @@ public class PatientServiceImpl
         dto.setLastName(patient.getLastName());
         dto.setBirthDate(patient.getBirthDate());
         dto.setPesel(patient.getPesel());
+        dto.setAdditionalInfo(patient.getAdditionalInfo());
 
         return dto;
     }

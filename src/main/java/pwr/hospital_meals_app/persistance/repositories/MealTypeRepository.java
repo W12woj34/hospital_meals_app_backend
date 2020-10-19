@@ -6,4 +6,5 @@ import pwr.hospital_meals_app.persistance.entities.MealTypeEntity;
 @Repository
 public interface MealTypeRepository extends BaseRepository<MealTypeEntity, Integer> {
 
+    MealTypeEntity findByName(String name);
 }

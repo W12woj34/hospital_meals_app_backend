@@ -32,7 +32,8 @@ public abstract class BaseCrudService<
 
     @Override
     public T save(T dto) {
-        E savedEntity = repository.save(mapper.mapToEntity(dto));
+        E entity = mapper.mapToEntity(dto);
+        E savedEntity = repository.save(entity);
 
         return mapper.mapToDto(savedEntity);
     }

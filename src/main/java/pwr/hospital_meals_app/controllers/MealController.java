@@ -25,9 +25,9 @@ public class MealController
     }
 
 
-    @GetMapping(RestMappings.MEAL_ORDER + RestMappings.ID)
-    public Page<PatientMealOrderDto> getMealsOrderData(@PathVariable Integer id) {
-        return service.getPatientOrders(id);
+    @GetMapping(RestMappings.MEAL_ORDER)
+    public Page<PatientMealOrderDto> getMealsOrderData(@RequestHeader("Authorization") String token) {
+        return service.getPatientOrders(token);
     }
 
     @PostMapping(RestMappings.MEAL_ORDER)

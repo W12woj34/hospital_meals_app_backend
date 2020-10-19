@@ -80,7 +80,7 @@ CREATE TABLE Dietary_Restriction
 CREATE TABLE Log
 (
     id                 int   NOT NULL AUTO_INCREMENT,
-    timestamp          timestamp NOT NULL,
+    timestamp          varchar(255) NOT NULL,
     modified_entity_id int   NOT NULL,
     user_id            int   NOT NULL,
     event_id           int   NOT NULL,
@@ -104,7 +104,7 @@ CREATE TABLE `Order`
     patient_id int   NOT NULL,
     nurse_id   int   NOT NULL,
     status_id  int   NOT NULL,
-    timestamp  timestamp NOT NULL,
+    timestamp  varchar(255) NOT NULL,
     PRIMARY KEY (id)
 );
 CREATE TABLE Order_Status

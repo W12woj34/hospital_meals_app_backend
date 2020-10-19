@@ -40,4 +40,10 @@ public class PatientDataDto {
     @Size(max = 255)
     private String diet;
 
+    @Size(max = 255)
+    private String additionalInfo;
+
+    @PastOrPresent
+    private LocalDate admissionDate;
+
 }

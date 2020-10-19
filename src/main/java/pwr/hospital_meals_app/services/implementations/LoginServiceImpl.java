@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pwr.hospital_meals_app.dto.additionals.PasswordChangeDto;
+import pwr.hospital_meals_app.dto.additionals.TokensDto;
 import pwr.hospital_meals_app.dto.base.LoginDto;
 import pwr.hospital_meals_app.persistance.entities.EmployeeEntity;
 import pwr.hospital_meals_app.persistance.entities.LoginEntity;
@@ -44,7 +45,7 @@ public class LoginServiceImpl
     }
 
     @Override
-    public void changePassword(Integer id, PasswordChangeDto dto) {
+    public boolean changePassword(Integer id, PasswordChangeDto dto) {
 
         Optional<LoginEntity> user = repository.findById(id);
         if (user.isEmpty()) {
@@ -54,13 +55,15 @@ public class LoginServiceImpl
         if (bCryptPasswordEncoder.matches(dto.getOldPassword(), user.get().getPassword())) {
             user.get().setPassword(bCryptPasswordEncoder.encode(dto.getNewPassword()));
             repository.save(user.get());
+            return true;
         } else {
-            throw new SecurityException();
+            return false;
         }
+
     }
 
     @Override
-    public void changePasswordForce(Integer id, String newPassword) {
+    public boolean changePasswordForce(Integer id, String newPassword) {
 
         Optional<EmployeeEntity> employee = employeeRepository.findById(id);
         if (employee.isEmpty()) {
@@ -70,6 +73,7 @@ public class LoginServiceImpl
 
         user.setPassword(bCryptPasswordEncoder.encode(newPassword));
         repository.save(user);
+        return true;
     }
 
     @Override
@@ -83,19 +87,21 @@ public class LoginServiceImpl
     }
 
     @Override
-    public String refresh(String refreshToken) {
+    public TokensDto refresh(String refreshToken) {
         String username = getUsernameFromRefreshToken(refreshToken);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         long currentTimeMillis = System.currentTimeMillis();
-
-        return Jwts.builder()
+        TokensDto tokens = new TokensDto();
+        tokens.setJwt("Bearer " + Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .claim("role", userDetails.getAuthorities())
                 .setIssuedAt(new Date(currentTimeMillis))
                 .setExpiration(new Date(currentTimeMillis + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET_AUTH.getBytes())
-                .compact();
+                .compact());
+        tokens.setRefreshToken(refreshToken);
+        return tokens;
     }
 
 

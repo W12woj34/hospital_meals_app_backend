@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
-
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "\"order\"")
@@ -32,7 +30,7 @@ public class OrderEntity extends AbstractPersistable<Integer> {
     private OrderStatusEntity status;
 
     @Column(name = "timestamp", nullable = false)
-    private Timestamp timestamp;
+    private String timestamp;
 
 
 }

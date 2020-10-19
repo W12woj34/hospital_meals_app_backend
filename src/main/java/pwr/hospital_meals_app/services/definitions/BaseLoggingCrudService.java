@@ -66,7 +66,7 @@ public abstract class BaseLoggingCrudService<
     public T saveAndLog(T dto, String token) {
 
         T dataEntity = save(dto);
-        logService.save(createLogDto(dto.getId(), getEmployeeIdFromToken(token), createStatus));
+        logService.save(createLogDto(dataEntity.getId(), getEmployeeIdFromToken(token), createStatus));
         return dataEntity;
 
     }
@@ -77,9 +77,7 @@ public abstract class BaseLoggingCrudService<
 
         Optional<T> dataEntity = updateById(dto, id);
 
-        if (dataEntity.isPresent()) {
-            logService.save(createLogDto(dto.getId(), getEmployeeIdFromToken(token), updateStatus));
-        }
+        dataEntity.ifPresent(t -> logService.save(createLogDto(t.getId(), getEmployeeIdFromToken(token), updateStatus)));
 
         return dataEntity;
     }
@@ -105,7 +103,7 @@ public abstract class BaseLoggingCrudService<
         dto.setUserId(employeeId);
         dto.setEvent(eventRepository.findById(status).map(eventMapper::mapToDto)
                 .orElseThrow(EntityNotFoundException::new));
-        dto.setTimestamp(new Timestamp(System.currentTimeMillis()));
+        dto.setTimestamp(new Timestamp(System.currentTimeMillis()).toString());
 
         return dto;
 
