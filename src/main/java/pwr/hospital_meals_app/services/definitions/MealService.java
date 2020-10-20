@@ -10,7 +10,9 @@ import java.util.List;
 
 public interface MealService extends SpecificationCrudService<MealDto, MealEntity, Integer> {
 
-    Page<PatientMealOrderDto> getPatientOrders(String token);
+    Page<PatientMealOrderDto> getPatientOrders(String token, Integer id);
 
     void setPatientOrders(List<PatientMealOrderDto> orders, String token);
+
+    Page<PatientMealOrderDto> getPatientsOrders(String token);
 }

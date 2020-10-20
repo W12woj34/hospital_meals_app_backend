@@ -27,8 +27,15 @@ public class MealController
 
     @GetMapping(RestMappings.MEAL_ORDER)
     public Page<PatientMealOrderDto> getMealsOrderData(@RequestHeader("Authorization") String token) {
-        return service.getPatientOrders(token);
+        return service.getPatientsOrders(token);
     }
+
+    @GetMapping(RestMappings.MEAL_ORDER + RestMappings.ID)
+    public Page<PatientMealOrderDto> getMealsOrderDataPatient(@RequestHeader("Authorization") String token,
+                                                              @PathVariable Integer id) {
+        return service.getPatientOrders(token, id);
+    }
+
 
     @PostMapping(RestMappings.MEAL_ORDER)
     public ResponseEntity<Void> setMealsOrderData(@RequestHeader("Authorization") String token,

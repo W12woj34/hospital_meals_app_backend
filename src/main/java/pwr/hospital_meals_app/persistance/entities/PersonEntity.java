@@ -26,6 +26,6 @@ public class PersonEntity extends AbstractPersistable<Integer> {
     private LocalDate birthDate;
 
     @Column(name = "pesel", nullable = false)
-    private long pesel;
+    private String pesel;
 
 }

@@ -30,7 +30,7 @@ public class EmployeeDataDto {
 
     @NotNull
     @Digits(integer = 11, fraction = 0)
-    private Long pesel;
+    private String pesel;
 
     @NotNull
     @Size(max = 255)

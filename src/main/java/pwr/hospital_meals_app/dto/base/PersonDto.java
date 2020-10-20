@@ -26,6 +26,6 @@ public class PersonDto extends BaseGeneratedIdDto<Integer> {
 
     @NotNull
     @Digits(integer = 11, fraction = 0)
-    private Long pesel;
+    private String pesel;
 
 }

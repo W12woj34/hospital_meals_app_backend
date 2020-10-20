@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pwr.hospital_meals_app.dto.additionals.PatientMealOrderDto;
 import pwr.hospital_meals_app.dto.base.MealDto;
 import pwr.hospital_meals_app.dto.base.MealTypeDto;
@@ -22,6 +23,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -49,6 +51,7 @@ public class MealServiceImpl
     private final LoginRepository loginRepository;
     private final OrderService orderService;
     private final OrderRepository orderRepository;
+    private final DietRepository dietRepository;
 
     public MealServiceImpl(MealRepository repository,
                            MealMapper mapper,
@@ -66,7 +69,7 @@ public class MealServiceImpl
                            MealTypeRepository mealTypeRepository,
                            LoginRepository loginRepository,
                            OrderService orderService,
-                           OrderRepository orderRepository) {
+                           OrderRepository orderRepository, DietRepository dietRepository) {
 
         super(repository, mapper);
         this.patientRepository = patientRepository;
@@ -84,10 +87,41 @@ public class MealServiceImpl
         this.loginRepository = loginRepository;
         this.orderService = orderService;
         this.orderRepository = orderRepository;
+        this.dietRepository = dietRepository;
     }
 
     @Override
-    public Page<PatientMealOrderDto> getPatientOrders(String token) {
+    public Page<PatientMealOrderDto> getPatientOrders(String token, Integer id) {
+
+        Integer ward = resolveWardIdFromToken(token);
+        List<PatientMealOrderDto> dtos = new LinkedList<>();
+        List<StayEntity> stays = stayRepository
+                .findByArchivedAndWard(false,
+                        wardRepository.findById(ward).orElseThrow(EntityNotFoundException::new));
+
+        List<PatientEntity> patients = stays.stream()
+                .map(StayEntity::getPatient)
+                .filter(p -> Objects.equals(p.getId(), id)).collect(Collectors.toList());
+
+        for (PatientEntity patient : patients) {
+            dtos.add(createPatientMealOrderDto(patient));
+        }
+
+        return new PageImpl<>(dtos);
+    }
+
+    @Override
+    @Transactional
+    public void setPatientOrders(List<PatientMealOrderDto> orders, String token) {
+
+        Integer nurseId = resolveIdFromToken(token);
+        for (PatientMealOrderDto order : orders) {
+            savePatientMealOrderDto(order, nurseId, token);
+        }
+    }
+
+    @Override
+    public Page<PatientMealOrderDto> getPatientsOrders(String token) {
 
         Integer ward = resolveWardIdFromToken(token);
         List<PatientMealOrderDto> dtos = new LinkedList<>();
@@ -103,15 +137,6 @@ public class MealServiceImpl
         }
 
         return new PageImpl<>(dtos);
-    }
-
-    @Override
-    public void setPatientOrders(List<PatientMealOrderDto> orders, String token) {
-
-        Integer nurseId = resolveIdFromToken(token);
-        for (PatientMealOrderDto order : orders) {
-            savePatientMealOrderDto(order, nurseId, token);
-        }
     }
 
     private Integer resolveIdFromToken(String token) {
@@ -252,10 +277,19 @@ public class MealServiceImpl
             MealDto mealDto = new MealDto();
             mealDto.setDate(LocalDate.now());
 
-            mealDto.setDiet(dietMapper.mapToDto(patient.getPatientDiets().stream()
-                    .filter(pd -> pd.getEndDate() == null)
-                    .findFirst().orElseThrow(EntityNotFoundException::new)
-                    .getDiet()));
+
+            Optional<PatientDietEntity> patientDiet = patient.getPatientDiets().stream()
+                    .filter(pd -> pd.getEndDate() == null).findFirst();
+            if (patientDiet.isPresent()) {
+                mealDto.setDiet(dietMapper
+                        .mapToDto(patientDiet.get().getDiet()));
+            } else {
+                mealDto.setDiet(dietMapper
+                        .mapToDto(dietRepository.findById(1)
+                                .orElseThrow(EntityNotFoundException::new)));
+            }
+
+
             MealTypeDto mealTypeDto = mealTypeMapper.mapToDto(mealTypeRepository.findByName(mealTypeName));
             mealDto.setType(mealTypeDto);
             mealDto.setAdditionalInfo("");
