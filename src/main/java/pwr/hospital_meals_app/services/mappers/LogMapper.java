@@ -4,11 +4,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import pwr.hospital_meals_app.dto.base.LogDto;
-import pwr.hospital_meals_app.persistance.entities.EmployeeEntity;
 import pwr.hospital_meals_app.persistance.entities.EventEntity;
 import pwr.hospital_meals_app.persistance.entities.LogEntity;
-import pwr.hospital_meals_app.persistance.repositories.EmployeeRepository;
+import pwr.hospital_meals_app.persistance.entities.PersonEntity;
 import pwr.hospital_meals_app.persistance.repositories.EventRepository;
+import pwr.hospital_meals_app.persistance.repositories.PersonRepository;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -17,7 +17,7 @@ public abstract class LogMapper
         implements BaseMapper<LogDto, LogEntity> {
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private PersonRepository personRepository;
     @Autowired
     private EventRepository eventRepository;
 
@@ -30,8 +30,8 @@ public abstract class LogMapper
     @Mapping(target = "event", source = "event.id")
     public abstract LogEntity mapToEntity(LogDto dto);
 
-    protected EmployeeEntity employeeEntityFromId(Integer id) {
-        return employeeRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    protected PersonEntity personEntityFromId(Integer id) {
+        return personRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     protected EventEntity eventEntityFromId(Integer id) {

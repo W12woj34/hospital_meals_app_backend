@@ -20,28 +20,21 @@ public abstract class DietaryRestrictionMapper
 
     @Autowired
     private PatientRepository patientRepository;
-    @Autowired
-    private DietitianRepository dietitianRepository;
+
     @Autowired
     private RestrictionStatusRepository restrictionStatusRepository;
 
     @Override
     @Mapping(target = "patientId", source = "patient.id")
-    @Mapping(target = "dietitianId", source = "dietitian.id")
     public abstract DietaryRestrictionDto mapToDto(DietaryRestrictionEntity entity);
 
     @Override
     @Mapping(target = "patient", source = "patientId")
-    @Mapping(target = "dietitian", source = "dietitianId")
     @Mapping(target = "status", source = "status.id")
     public abstract DietaryRestrictionEntity mapToEntity(DietaryRestrictionDto dto);
 
     protected PatientEntity patientEntityFromId(Integer id) {
         return patientRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-    }
-
-    protected DietitianEntity dietitianEntityFromId(Integer id) {
-        return dietitianRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     protected RestrictionStatusEntity RestrictionStatusEntityFromId(Integer id) {

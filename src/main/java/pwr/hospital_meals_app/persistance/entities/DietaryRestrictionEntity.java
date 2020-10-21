@@ -22,10 +22,6 @@ public class DietaryRestrictionEntity extends AbstractPersistable<Integer> {
     private PatientEntity patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dietitian_id")
-    private DietitianEntity dietitian;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
     private RestrictionStatusEntity status;
 

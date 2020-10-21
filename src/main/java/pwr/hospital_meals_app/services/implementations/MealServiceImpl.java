@@ -114,9 +114,8 @@ public class MealServiceImpl
     @Transactional
     public void setPatientOrders(List<PatientMealOrderDto> orders, String token) {
 
-        Integer nurseId = resolveIdFromToken(token);
         for (PatientMealOrderDto order : orders) {
-            savePatientMealOrderDto(order, nurseId, token);
+            savePatientMealOrderDto(order, token);
         }
     }
 
@@ -137,18 +136,6 @@ public class MealServiceImpl
         }
 
         return new PageImpl<>(dtos);
-    }
-
-    private Integer resolveIdFromToken(String token) {
-
-        Jws<Claims> claimsJws =
-                Jwts.parser()
-                        .setSigningKey(SECRET_AUTH.getBytes())
-                        .parseClaimsJws(token.replace(TOKEN_PREFIX, ""));
-
-        return Optional.ofNullable(loginRepository
-                .findByUsername(claimsJws.getBody().getSubject()).getEmployee().getId())
-                .orElseThrow(EntityNotFoundException::new);
     }
 
     private Integer resolveWardIdFromToken(String token) {
@@ -217,7 +204,7 @@ public class MealServiceImpl
         return dto;
     }
 
-    private void savePatientMealOrderDto(PatientMealOrderDto order, Integer nurseId, String token) {
+    private void savePatientMealOrderDto(PatientMealOrderDto order, String token) {
 
 
         PatientEntity patient = patientRepository.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
@@ -228,17 +215,17 @@ public class MealServiceImpl
                 .collect(Collectors.toList());
 
 
-        saveDtoToDatabase(nurseId, order, "Śniadanie", patient, patientMeals, token);
-        saveDtoToDatabase(nurseId, order, "Obiad", patient, patientMeals, token);
-        saveDtoToDatabase(nurseId, order, "Kolacja", patient, patientMeals, token);
+        saveDtoToDatabase(order, "Śniadanie", patient, patientMeals, token);
+        saveDtoToDatabase(order, "Obiad", patient, patientMeals, token);
+        saveDtoToDatabase(order, "Kolacja", patient, patientMeals, token);
     }
 
-    private void saveDtoToDatabase(Integer nurseId,
-                                   PatientMealOrderDto order,
-                                   String mealTypeName,
-                                   PatientEntity patient,
-                                   List<MealEntity> patientMeals,
-                                   String token) {
+    private void saveDtoToDatabase(
+            PatientMealOrderDto order,
+            String mealTypeName,
+            PatientEntity patient,
+            List<MealEntity> patientMeals,
+            String token) {
 
         Optional<MealEntity> mealType = patientMeals.stream()
                 .filter(m -> m.getType().getName().equals(mealTypeName))
@@ -246,8 +233,6 @@ public class MealServiceImpl
 
         if (mealType.isPresent()) {
             OrderEntity mealOrder = mealType.get().getOrder();
-            mealOrder.setNurse(wardNurseRepository.findById(nurseId)
-                    .orElseThrow(EntityNotFoundException::new));
             mealOrder.setTimestamp(new Timestamp(System.currentTimeMillis()).toString());
             if ((order.isBreakfast() && mealTypeName.equals("Śniadanie")) ||
                     (order.isLunch() && mealTypeName.equals("Obiad")) ||
@@ -267,7 +252,6 @@ public class MealServiceImpl
             }
 
             OrderDto orderDto = new OrderDto();
-            orderDto.setNurseId(nurseId);
             orderDto.setPatientId(patient.getId());
             orderDto.setStatus(orderStatusRepository.findById(1).stream()
                     .map(orderStatusMapper::mapToDto).findFirst()

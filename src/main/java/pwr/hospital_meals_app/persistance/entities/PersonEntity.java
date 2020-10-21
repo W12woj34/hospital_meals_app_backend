@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Collection;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -27,5 +28,8 @@ public class PersonEntity extends AbstractPersistable<Integer> {
 
     @Column(name = "pesel", nullable = false)
     private String pesel;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Collection<LogEntity> logs;
 
 }

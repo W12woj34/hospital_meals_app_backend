@@ -22,10 +22,6 @@ public class OrderEntity extends AbstractPersistable<Integer> {
     private PatientEntity patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nurse_id")
-    private WardNurseEntity nurse;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
     private OrderStatusEntity status;
 

@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 @Table(name = "ward_nurse")
@@ -17,9 +16,6 @@ public class WardNurseEntity extends EmployeeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ward_id")
     private WardEntity ward;
-
-    @OneToMany(mappedBy = "nurse", fetch = FetchType.LAZY)
-    private Collection<OrderEntity> orders;
 
 
 }

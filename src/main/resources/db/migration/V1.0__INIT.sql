@@ -73,7 +73,6 @@ CREATE TABLE Dietary_Restriction
     id           int      NOT NULL AUTO_INCREMENT,
     restriction  varchar(255) NOT NULL,
     patient_id   int      NOT NULL,
-    dietitian_id int      NOT NULL,
     status_id    int      NOT NULL,
     PRIMARY KEY (id)
 );
@@ -102,7 +101,6 @@ CREATE TABLE `Order`
 (
     id         int   NOT NULL AUTO_INCREMENT,
     patient_id int   NOT NULL,
-    nurse_id   int   NOT NULL,
     status_id  int   NOT NULL,
     timestamp  varchar(255) NOT NULL,
     PRIMARY KEY (id)
@@ -155,7 +153,7 @@ ALTER TABLE Dietary_Restriction
 ALTER TABLE Ward_Nurse
     ADD CONSTRAINT FKWard_Nurse973987 FOREIGN KEY (ward_id) REFERENCES Ward (id);
 ALTER TABLE Log
-    ADD CONSTRAINT FKLog61875 FOREIGN KEY (user_id) REFERENCES Employee (id);
+    ADD CONSTRAINT FKLog61875 FOREIGN KEY (user_id) REFERENCES Person (id);
 ALTER TABLE Log
     ADD CONSTRAINT FKLog537778 FOREIGN KEY (event_id) REFERENCES Event (id);
 ALTER TABLE Meal
@@ -166,8 +164,6 @@ ALTER TABLE `Order`
     ADD CONSTRAINT FKOrder184724 FOREIGN KEY (status_id) REFERENCES Order_Status (id);
 ALTER TABLE `Order`
     ADD CONSTRAINT FKOrder552148 FOREIGN KEY (patient_id) REFERENCES Patient (id);
-ALTER TABLE `Order`
-    ADD CONSTRAINT FKOrder957857 FOREIGN KEY (nurse_id) REFERENCES Ward_Nurse (id);
 ALTER TABLE Meal
     ADD CONSTRAINT FKMeal854549 FOREIGN KEY (id) REFERENCES `Order` (id);
 ALTER TABLE Patient_Diet
@@ -176,8 +172,6 @@ ALTER TABLE Patient_Diet
     ADD CONSTRAINT FKPatient_Di469016 FOREIGN KEY (diet_id) REFERENCES Diet (id);
 ALTER TABLE Dietary_Restriction
     ADD CONSTRAINT FKDietary_Re323776 FOREIGN KEY (status_id) REFERENCES Restriction_Status (id);
-ALTER TABLE Dietary_Restriction
-    ADD CONSTRAINT FKDietary_Re396338 FOREIGN KEY (dietitian_id) REFERENCES Dietitian (id);
 ALTER TABLE Patient
     ADD CONSTRAINT FKPatient608506 FOREIGN KEY (id) REFERENCES Person (id);
 ALTER TABLE Stay

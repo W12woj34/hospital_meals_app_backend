@@ -22,7 +22,7 @@ public class LogEntity extends AbstractPersistable<Integer> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private EmployeeEntity user;
+    private PersonEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
