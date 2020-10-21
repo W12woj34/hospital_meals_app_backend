@@ -80,7 +80,6 @@ CREATE TABLE Log
 (
     id                 int   NOT NULL AUTO_INCREMENT,
     timestamp          varchar(255) NOT NULL,
-    modified_entity_id int   NOT NULL,
     user_id            int   NOT NULL,
     target_id            int   NOT NULL,
     event_id           int   NOT NULL,

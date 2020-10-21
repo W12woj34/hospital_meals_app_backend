@@ -61,7 +61,7 @@ INSERT INTO Order_Status(id, name) VALUES (1, 'Złożone');
 INSERT INTO Order_Status(id, name) VALUES (2, 'Przyjęte');
 INSERT INTO Order_Status(id, name) VALUES (3, 'Zaktualizowane');
 INSERT INTO Order_Status(id, name) VALUES (4, 'Anulowane');
-INSERT INTO Patient(id, additional_info) VALUES (11, '');
+INSERT INTO Patient(id, additional_info) VALUES (11, 'Testowe informacje');
 INSERT INTO Patient(id, additional_info) VALUES (12, '');
 INSERT INTO Patient(id, additional_info) VALUES (13, '');
 INSERT INTO Patient(id, additional_info) VALUES (14, '');
