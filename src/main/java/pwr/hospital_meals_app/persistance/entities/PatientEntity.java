@@ -3,6 +3,7 @@ package pwr.hospital_meals_app.persistance.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -12,8 +13,12 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientEntity extends PersonEntity {
+public class PatientEntity extends AbstractPersistable<Integer> {
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id")
+    private PersonEntity person;
 
     @Column(name = "additional_info", nullable = true)
     private String additionalInfo;

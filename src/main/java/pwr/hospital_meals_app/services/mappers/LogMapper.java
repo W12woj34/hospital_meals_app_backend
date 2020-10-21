@@ -23,10 +23,12 @@ public abstract class LogMapper
 
     @Override
     @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "targetId", source = "target.id")
     public abstract LogDto mapToDto(LogEntity entity);
 
     @Override
     @Mapping(target = "user", source = "userId")
+    @Mapping(target = "target", source = "targetId")
     @Mapping(target = "event", source = "event.id")
     public abstract LogEntity mapToEntity(LogDto dto);
 

@@ -17,4 +17,6 @@ public interface LoginService extends CrudService<LoginDto, Integer> {
     String encodePassword(String password);
 
     boolean changePasswordForce(Integer id, String newPassword);
+
+    boolean existsByUsername(String username);
 }

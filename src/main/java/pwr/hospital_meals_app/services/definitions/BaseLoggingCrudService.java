@@ -8,8 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import pwr.hospital_meals_app.dto.base.LogDto;
 import pwr.hospital_meals_app.dto.base.PersistableDto;
-import pwr.hospital_meals_app.persistance.repositories.EventRepository;
-import pwr.hospital_meals_app.persistance.repositories.LoginRepository;
+import pwr.hospital_meals_app.persistance.repositories.*;
 import pwr.hospital_meals_app.services.mappers.BaseMapper;
 import pwr.hospital_meals_app.services.mappers.EventMapper;
 
@@ -38,6 +37,10 @@ public abstract class BaseLoggingCrudService<
     private final LoginRepository loginRepository;
     private final LogService logService;
     private final EventRepository eventRepository;
+    OrderRepository orderRepository;
+    PatientDietRepository patientDietRepository;
+    StayRepository stayRepository;
+    DietaryRestrictionRepository dietaryRestrictionRepository;
     private final EventMapper eventMapper;
     private final Integer createStatus;
     private final Integer updateStatus;
@@ -48,6 +51,10 @@ public abstract class BaseLoggingCrudService<
                                   LoginRepository loginRepository,
                                   LogService logService,
                                   EventRepository eventRepository,
+                                  OrderRepository orderRepository,
+                                  PatientDietRepository patientDietRepository,
+                                  StayRepository stayRepository,
+                                  DietaryRestrictionRepository dietaryRestrictionRepository,
                                   EventMapper eventMapper,
                                   Integer createStatus,
                                   Integer updateStatus) {
@@ -59,10 +66,14 @@ public abstract class BaseLoggingCrudService<
         this.eventMapper = eventMapper;
         this.createStatus = createStatus;
         this.updateStatus = updateStatus;
+        this.orderRepository = orderRepository;
+        this.patientDietRepository = patientDietRepository;
+        this.stayRepository = stayRepository;
+        this.dietaryRestrictionRepository = dietaryRestrictionRepository;
     }
 
 
-   @Override
+    @Override
     public T saveAndLog(T dto, String token) {
 
         T dataEntity = save(dto);
@@ -99,8 +110,21 @@ public abstract class BaseLoggingCrudService<
 
         LogDto dto = new LogDto();
 
-        dto.setModifiedEntityId(Integer.valueOf(entityId.toString()));
         dto.setUserId(employeeId);
+        if (status == 1 || status == 2) {
+            dto.setTargetId(this.orderRepository.findById(Integer.valueOf(entityId.toString()))
+                    .orElseThrow(EntityNotFoundException::new).getPatient().getPerson().getId());
+        } else if (status == 3 || status == 4) {
+            dto.setTargetId(this.dietaryRestrictionRepository.findById(Integer.valueOf(entityId.toString()))
+                    .orElseThrow(EntityNotFoundException::new).getPatient().getPerson().getId());
+        } else if (status == 5 || status == 6) {
+            dto.setTargetId(this.stayRepository.findById(Integer.valueOf(entityId.toString()))
+                    .orElseThrow(EntityNotFoundException::new).getPatient().getPerson().getId());
+        } else if (status == 7) {
+            dto.setTargetId(this.patientDietRepository.findById(Integer.valueOf(entityId.toString()))
+                    .orElseThrow(EntityNotFoundException::new).getPatient().getPerson().getId());
+        }
+        //dto.setTargetId();
         dto.setEvent(eventRepository.findById(status).map(eventMapper::mapToDto)
                 .orElseThrow(EntityNotFoundException::new));
         dto.setTimestamp(new Timestamp(System.currentTimeMillis()).toString());

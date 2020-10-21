@@ -77,6 +77,13 @@ public class LoginServiceImpl
     }
 
     @Override
+    public boolean existsByUsername(String username) {
+
+        return repository.existsByUsername(username);
+
+    }
+
+    @Override
     public Optional<Integer> getUserLoginId(String token) {
         Jws<Claims> claimsJws =
                 Jwts.parser()

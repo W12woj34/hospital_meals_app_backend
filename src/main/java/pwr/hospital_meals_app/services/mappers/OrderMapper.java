@@ -4,11 +4,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import pwr.hospital_meals_app.dto.base.OrderDto;
-import pwr.hospital_meals_app.persistance.entities.WardNurseEntity;
 import pwr.hospital_meals_app.persistance.entities.PatientEntity;
 import pwr.hospital_meals_app.persistance.entities.OrderStatusEntity;
 import pwr.hospital_meals_app.persistance.entities.OrderEntity;
-import pwr.hospital_meals_app.persistance.repositories.WardNurseRepository;
 import pwr.hospital_meals_app.persistance.repositories.PatientRepository;
 import pwr.hospital_meals_app.persistance.repositories.OrderStatusRepository;
 

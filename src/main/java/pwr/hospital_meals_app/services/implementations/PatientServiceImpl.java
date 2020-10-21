@@ -8,12 +8,15 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pwr.hospital_meals_app.dto.additionals.PatientDataDto;
+import pwr.hospital_meals_app.dto.base.EmployeeDto;
 import pwr.hospital_meals_app.dto.base.PatientDto;
+import pwr.hospital_meals_app.persistance.entities.EmployeeEntity;
 import pwr.hospital_meals_app.persistance.entities.PatientDietEntity;
 import pwr.hospital_meals_app.persistance.entities.PatientEntity;
 import pwr.hospital_meals_app.persistance.entities.StayEntity;
 import pwr.hospital_meals_app.persistance.repositories.LoginRepository;
 import pwr.hospital_meals_app.persistance.repositories.PatientRepository;
+import pwr.hospital_meals_app.persistance.repositories.PersonRepository;
 import pwr.hospital_meals_app.persistance.repositories.WardNurseRepository;
 import pwr.hospital_meals_app.services.definitions.BaseSpecificationCrudService;
 import pwr.hospital_meals_app.services.definitions.PatientService;
@@ -34,14 +37,41 @@ public class PatientServiceImpl
 
     private final LoginRepository loginRepository;
     private final WardNurseRepository wardNurseRepository;
+    private final PersonRepository personRepository;
 
     public PatientServiceImpl(PatientRepository repository,
                               PatientMapper mapper,
                               LoginRepository loginRepository,
-                              WardNurseRepository wardNurseRepository) {
+                              WardNurseRepository wardNurseRepository, PersonRepository personRepository) {
         super(repository, mapper);
         this.loginRepository = loginRepository;
         this.wardNurseRepository = wardNurseRepository;
+        this.personRepository = personRepository;
+    }
+
+    @Override
+    public PatientDto save(PatientDto dto) {
+        PatientEntity entity = mapper.mapToEntity(dto);
+        entity.setPerson(personRepository.findById(dto.getId())
+                .orElseThrow(EntityNotFoundException::new));
+        PatientEntity savedEntity = repository.save(entity);
+
+        return mapper.mapToDto(savedEntity);
+    }
+
+    @Override
+    public Optional<PatientDto> updateById(PatientDto dto, Integer id) {
+        Optional<PatientEntity> entityOptional = repository.findById(id);
+
+        return entityOptional.map(
+                entity -> {
+                    dto.setId(id);
+                    PatientEntity employeeEntity = mapper.mapToEntity(dto);
+                    employeeEntity.setPerson(personRepository.findById(dto.getId())
+                            .orElseThrow(EntityNotFoundException::new));
+                    repository.save(employeeEntity);
+                    return mapper.mapToDto(entity);
+                });
     }
 
     @Override
@@ -156,10 +186,10 @@ public class PatientServiceImpl
         }
 
         dto.setId(patient.getId());
-        dto.setFirstName(patient.getFirstName());
-        dto.setLastName(patient.getLastName());
-        dto.setBirthDate(patient.getBirthDate());
-        dto.setPesel(patient.getPesel());
+        dto.setFirstName(patient.getPerson().getFirstName());
+        dto.setLastName(patient.getPerson().getLastName());
+        dto.setBirthDate(patient.getPerson().getBirthDate());
+        dto.setPesel(patient.getPerson().getPesel());
         dto.setAdditionalInfo(patient.getAdditionalInfo());
 
         return dto;

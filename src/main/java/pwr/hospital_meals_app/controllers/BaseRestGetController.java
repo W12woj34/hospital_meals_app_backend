@@ -38,7 +38,7 @@ public abstract class BaseRestGetController<T extends PersistableDto<ID>, ID ext
                 .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_EXCEPTION_MSG + id));
     }
 
-    @GetMapping(RestMappings.EXIST +RestMappings.ID)
+    @GetMapping(RestMappings.EXIST + RestMappings.ID)
     public boolean existById(@PathVariable ID id) {
         return service.existsById(id);
     }

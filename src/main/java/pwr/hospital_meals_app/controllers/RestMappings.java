@@ -6,6 +6,7 @@ package pwr.hospital_meals_app.controllers;
 public final class RestMappings {
 
     public static final String ID = "/{id}";
+    public static final String USERNAME = "/{username}";
     public static final String SEARCH = "/search";
     public static final String PERSONAL = "/personal";
 
@@ -31,6 +32,7 @@ public final class RestMappings {
     public static final String WARD_NURSE = "/ward-nurses";
 
     public static final String EXIST = "/exists";
+    public static final String EXIST_USERNAME = "/exists-username";
     public static final String MEAL_ORDER = "/meal-order";
     public static final String DATA = "/data";
     public static final String DATA_WARD = "/data-ward";

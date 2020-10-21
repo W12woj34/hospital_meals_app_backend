@@ -7,4 +7,6 @@ import pwr.hospital_meals_app.persistance.entities.LoginEntity;
 public interface LoginRepository extends BaseRepository<LoginEntity, Integer> {
 
     LoginEntity findByUsername(String username);
+
+    boolean existsByUsername(String username);
 }

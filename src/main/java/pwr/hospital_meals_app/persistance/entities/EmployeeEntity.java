@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 
@@ -13,8 +14,12 @@ import javax.persistence.*;
 @OnDelete(action = OnDeleteAction.NO_ACTION)
 @Data
 @NoArgsConstructor
-public class EmployeeEntity extends PersonEntity {
+public class EmployeeEntity extends AbstractPersistable<Integer> {
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id")
+    private PersonEntity person;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "login_id")

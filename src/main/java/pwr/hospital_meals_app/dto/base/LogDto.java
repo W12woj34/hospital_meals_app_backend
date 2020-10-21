@@ -13,12 +13,12 @@ public class LogDto extends BaseGeneratedIdDto<Integer> {
 
     @NotNull
     private String timestamp;
-
-    @NotNull
-    private Integer modifiedEntityId;
-
+    
     @NotNull
     private Integer userId;
+
+    @NotNull
+    private Integer targetId;
 
     @NotNull
     private EventDto event;

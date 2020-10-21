@@ -18,9 +18,22 @@ public class PatientDietServiceImpl
                                   LoginRepository loginRepository,
                                   LogService logService,
                                   EventMapper eventMapper,
+                                  OrderRepository orderRepository,
+                                  PatientDietRepository patientDietRepository,
+                                  StayRepository stayRepository,
+                                  DietaryRestrictionRepository dietaryRestrictionRepository,
                                   EventRepository eventRepository) {
-        super(repository, mapper, loginRepository, logService,
-                eventRepository, eventMapper, EVENT_TYPE.DIET_UPDATE.getValue(),
+        super(repository,
+                mapper,
+                loginRepository,
+                logService,
+                eventRepository,
+                orderRepository,
+                patientDietRepository,
+                stayRepository,
+                dietaryRestrictionRepository,
+                eventMapper,
+                EVENT_TYPE.DIET_UPDATE.getValue(),
                 EVENT_TYPE.DIET_UPDATE.getValue());
     }
 }

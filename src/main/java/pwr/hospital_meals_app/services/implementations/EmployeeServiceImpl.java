@@ -31,6 +31,7 @@ public class EmployeeServiceImpl
     private final DietitianRepository dietitianRepository;
     private final PatientMovementRepository patientMovementRepository;
     private final LoginRepository loginRepository;
+    private final PersonRepository personRepository;
 
     public EmployeeServiceImpl(EmployeeRepository repository,
                                EmployeeMapper mapper,
@@ -38,14 +39,42 @@ public class EmployeeServiceImpl
                                MainKitchenDietitianRepository mainKitchenDietitianRepository,
                                WardNurseRepository wardNurseRepository,
                                DietitianRepository dietitianRepository,
-                               PatientMovementRepository patientMovementRepository) {
+                               PatientMovementRepository patientMovementRepository,
+                               PersonRepository personRepository) {
         super(repository, mapper, loginRepository);
         this.mainKitchenDietitianRepository = mainKitchenDietitianRepository;
         this.wardNurseRepository = wardNurseRepository;
         this.dietitianRepository = dietitianRepository;
         this.patientMovementRepository = patientMovementRepository;
         this.loginRepository = loginRepository;
+        this.personRepository = personRepository;
     }
+
+    @Override
+    public EmployeeDto save(EmployeeDto dto) {
+        EmployeeEntity entity = mapper.mapToEntity(dto);
+        entity.setPerson(personRepository.findById(dto.getId())
+                .orElseThrow(EntityNotFoundException::new));
+        EmployeeEntity savedEntity = repository.save(entity);
+
+        return mapper.mapToDto(savedEntity);
+    }
+
+    @Override
+    public Optional<EmployeeDto> updateById(EmployeeDto dto, Integer id) {
+        Optional<EmployeeEntity> entityOptional = repository.findById(id);
+
+        return entityOptional.map(
+                entity -> {
+                    dto.setId(id);
+                    EmployeeEntity employeeEntity = mapper.mapToEntity(dto);
+                    employeeEntity.setPerson(personRepository.findById(dto.getId())
+                            .orElseThrow(EntityNotFoundException::new));
+                    repository.save(employeeEntity);
+                    return mapper.mapToDto(entity);
+                });
+    }
+
 
     @Override
     public Page<EmployeeDataDto> getEmployeesData(Pageable pageable) {
@@ -95,10 +124,10 @@ public class EmployeeServiceImpl
         EmployeeDataDto dto = new EmployeeDataDto();
 
         dto.setId(employee.getId());
-        dto.setFirstName(employee.getFirstName());
-        dto.setLastName(employee.getLastName());
-        dto.setBirthDate(employee.getBirthDate());
-        dto.setPesel(employee.getPesel());
+        dto.setFirstName(employee.getPerson().getFirstName());
+        dto.setLastName(employee.getPerson().getLastName());
+        dto.setBirthDate(employee.getPerson().getBirthDate());
+        dto.setPesel(employee.getPerson().getPesel());
 
         Optional<MainKitchenDietitianEntity> kitchen = mainKitchenDietitianRepository
                 .findById(Objects.requireNonNull(employee.getId()));

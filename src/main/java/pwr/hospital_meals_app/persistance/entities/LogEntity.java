@@ -17,12 +17,13 @@ public class LogEntity extends AbstractPersistable<Integer> {
     @Column(name = "timestamp", nullable = false)
     private String timestamp;
 
-    @Column(name = "modified_entity_id", nullable = false)
-    private int modifiedEntityId;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private PersonEntity user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "target_id")
+    private PersonEntity target;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")

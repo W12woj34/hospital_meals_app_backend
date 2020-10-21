@@ -66,4 +66,9 @@ public class LoginController
         return service.changePasswordForce(id, newPassword);
 
     }
+
+    @GetMapping(RestMappings.EXIST_USERNAME + RestMappings.USERNAME)
+    public boolean existByUsername(@PathVariable String username) {
+        return service.existsByUsername(username);
+    }
 }

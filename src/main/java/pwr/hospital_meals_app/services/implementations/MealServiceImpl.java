@@ -161,10 +161,10 @@ public class MealServiceImpl
         PatientMealOrderDto dto = new PatientMealOrderDto();
 
         dto.setId(patient.getId());
-        dto.setFirstName(patient.getFirstName());
-        dto.setLastName(patient.getLastName());
-        dto.setBirthDate(patient.getBirthDate());
-        dto.setPesel(patient.getPesel());
+        dto.setFirstName(patient.getPerson().getFirstName());
+        dto.setLastName(patient.getPerson().getLastName());
+        dto.setBirthDate(patient.getPerson().getBirthDate());
+        dto.setPesel(patient.getPerson().getPesel());
 
         dto.setWard(patient.getStays().stream()
                 .filter(s -> !s.isArchived() && s.getReleaseDate() == null)

@@ -30,6 +30,15 @@ public class PersonEntity extends AbstractPersistable<Integer> {
     private String pesel;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Collection<LogEntity> logs;
+    private Collection<LogEntity> logsUser;
+
+    @OneToMany(mappedBy = "target", fetch = FetchType.LAZY)
+    private Collection<LogEntity> logsTarget;
+
+    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
+    private PatientEntity patient;
+
+    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
+    private EmployeeEntity employee;
 
 }

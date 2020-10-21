@@ -10,9 +10,12 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeDto extends PersonDto {
+public class EmployeeDto extends BaseInheritedIdDto<Integer> {
 
     @NotNull(groups = OnCreate.class)
     private Integer loginId;
+
+    @NotNull
+    private PersonDto person;
 
 }
