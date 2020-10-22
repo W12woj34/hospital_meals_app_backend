@@ -19,7 +19,7 @@ public final class RestMappings {
     public static final String LOGIN = "/logins";
     public static final String MAIN_KITCHEN_DIETITIAN = "/main-kitchen-dietitians";
     public static final String MEAL = "/meals";
-    public static final String MEAL_TYP = "/meal-types";
+    public static final String MEAL_TYPE = "/meal-types";
     public static final String ORDER = "/orders";
     public static final String ORDER_STATUS = "/order-statuses";
     public static final String PATIENT = "/patients";

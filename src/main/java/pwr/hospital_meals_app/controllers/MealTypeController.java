@@ -6,7 +6,7 @@ import pwr.hospital_meals_app.dto.base.MealTypeDto;
 import pwr.hospital_meals_app.services.definitions.MealTypeService;
 
 @RestController
-@RequestMapping(RestMappings.MEAL_TYP)
+@RequestMapping(RestMappings.MEAL_TYPE)
 public class MealTypeController
         extends BaseRestCrudController<
         MealTypeDto, Integer> {
