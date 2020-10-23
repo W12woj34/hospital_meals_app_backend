@@ -147,10 +147,15 @@ public class MealServiceImpl
 
         List<OrderEntity> patientOrders = orderRepository.findByPatient(patient);
 
-        for(OrderEntity patientOrder: patientOrders){
+        List<MealEntity> patientMeals = patientOrders.stream()
+                .map(OrderEntity::getMeal)
+                .filter(m -> m.getDate().equals(LocalDate.now()))
+                .collect(Collectors.toList());
 
-            MealEntity patientMeal = patientOrder.getMeal();
-            patientMeal.setDiet(dietMapper.mapToEntity(diet));
+        for (MealEntity patientMeal : patientMeals) {
+
+            patientMeal.setDiet(dietRepository.findById(diet.getId())
+                    .orElseThrow(EntityNotFoundException::new));
             mealRepository.save(patientMeal);
         }
 

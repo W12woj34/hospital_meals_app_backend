@@ -80,9 +80,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                         LOG + "/**",
                         RESTRICTION_STATUS + "/**")
                 .denyAll()
-                .antMatchers(LOGIN + CHANGE_PASSWORD,
-                        LOGIN + REFRESH_TOKEN)
+                .antMatchers(LOGIN + CHANGE_PASSWORD)
                 .hasAnyRole(ROLE_NURSE, ROLE_DIETITIAN, ROLE_KITCHEN, ROLE_MOVEMENT)
+                .antMatchers(
+                        LOGIN + REFRESH_TOKEN)
+                .permitAll()
                 .antMatchers(LOGIN + "/**")
                 .hasRole(ROLE_MOVEMENT)
                 .anyRequest()

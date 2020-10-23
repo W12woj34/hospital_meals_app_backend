@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -97,12 +98,13 @@ public class LoginServiceImpl
     public TokensDto refresh(String refreshToken) {
         String username = getUsernameFromRefreshToken(refreshToken);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
+        GrantedAuthority authority = userDetails.getAuthorities().stream().findFirst()
+                .orElseThrow(SecurityException::new);
         long currentTimeMillis = System.currentTimeMillis();
         TokensDto tokens = new TokensDto();
         tokens.setJwt("Bearer " + Jwts.builder()
                 .setSubject(userDetails.getUsername())
-                .claim("role", userDetails.getAuthorities())
+                .claim("role", authority.getAuthority())
                 .setIssuedAt(new Date(currentTimeMillis))
                 .setExpiration(new Date(currentTimeMillis + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET_AUTH.getBytes())

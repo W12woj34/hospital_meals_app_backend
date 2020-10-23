@@ -4,10 +4,11 @@ import org.springframework.stereotype.Repository;
 import pwr.hospital_meals_app.persistance.entities.MealEntity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface MealRepository extends BaseRepository<MealEntity, Integer> {
 
 
-    MealEntity findByDate(LocalDate date);
+    List<MealEntity> findByDate(LocalDate date);
 }
