@@ -50,13 +50,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .hasAnyRole(ROLE_NURSE, ROLE_DIETITIAN, ROLE_KITCHEN, ROLE_MOVEMENT)
                 .antMatchers(PERSON + "/**")
                 .hasAnyRole(ROLE_NURSE, ROLE_MOVEMENT)
-                .antMatchers(MEAL + "/**",
-                        MEAL_TYPE + "/**",
-                        ORDER + "/**",
+                .antMatchers(ORDER + "/**",
                         ORDER_STATUS + "/**",
                         STAY + "/**")
                 .hasRole(ROLE_NURSE)
-                .antMatchers(PATIENT + "/**")
+                .antMatchers(PATIENT + "/**",
+                        MEAL + "/**")
                 .hasAnyRole(ROLE_NURSE, ROLE_DIETITIAN)
                 .antMatchers(HttpMethod.GET,
                         RESTRICTION_STATUS + "/**")
@@ -75,6 +74,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                         EMPLOYEE + "/**")
                 .hasRole(ROLE_MOVEMENT)
                 .antMatchers(DIET + "/**",
+                        MEAL_TYPE + "/**",
                         WARD + "/**",
                         EVENT + "/**",
                         LOG + "/**",

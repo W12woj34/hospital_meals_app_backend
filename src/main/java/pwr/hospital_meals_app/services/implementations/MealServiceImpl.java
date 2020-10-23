@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pwr.hospital_meals_app.dto.additionals.PatientMealOrderDto;
+import pwr.hospital_meals_app.dto.base.DietDto;
 import pwr.hospital_meals_app.dto.base.MealDto;
 import pwr.hospital_meals_app.dto.base.MealTypeDto;
 import pwr.hospital_meals_app.dto.base.OrderDto;
@@ -136,6 +137,24 @@ public class MealServiceImpl
         }
 
         return new PageImpl<>(dtos);
+    }
+
+    @Override
+    public void setPatientMealsDiet(Integer patientId, DietDto diet) {
+
+        PatientEntity patient = patientRepository.findById(patientId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        List<OrderEntity> patientOrders = orderRepository.findByPatient(patient);
+
+        for(OrderEntity patientOrder: patientOrders){
+
+            MealEntity patientMeal = patientOrder.getMeal();
+            patientMeal.setDiet(dietMapper.mapToEntity(diet));
+            mealRepository.save(patientMeal);
+        }
+
+
     }
 
     private Integer resolveWardIdFromToken(String token) {

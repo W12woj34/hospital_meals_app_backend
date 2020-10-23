@@ -3,6 +3,7 @@ package pwr.hospital_meals_app.services.definitions;
 
 import org.springframework.data.domain.Page;
 import pwr.hospital_meals_app.dto.additionals.PatientMealOrderDto;
+import pwr.hospital_meals_app.dto.base.DietDto;
 import pwr.hospital_meals_app.dto.base.MealDto;
 import pwr.hospital_meals_app.persistance.entities.MealEntity;
 
@@ -15,4 +16,6 @@ public interface MealService extends SpecificationCrudService<MealDto, MealEntit
     void setPatientOrders(List<PatientMealOrderDto> orders, String token);
 
     Page<PatientMealOrderDto> getPatientsOrders(String token);
+
+    void setPatientMealsDiet(Integer patientId, DietDto diet);
 }

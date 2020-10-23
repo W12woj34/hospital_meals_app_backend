@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pwr.hospital_meals_app.dto.additionals.PatientMealOrderDto;
+import pwr.hospital_meals_app.dto.base.DietDto;
 import pwr.hospital_meals_app.dto.base.MealDto;
 import pwr.hospital_meals_app.persistance.entities.MealEntity;
 import pwr.hospital_meals_app.services.definitions.MealService;
@@ -42,6 +43,14 @@ public class MealController
                                                   @RequestBody List<PatientMealOrderDto> dtos) {
 
         service.setPatientOrders(dtos, token);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(RestMappings.MEAL_ORDER + RestMappings.ID)
+    public ResponseEntity<Void> setPatientMealsDiet(@PathVariable Integer id,
+                                                    @RequestBody DietDto dtos) {
+
+        service.setPatientMealsDiet(id, dtos);
         return ResponseEntity.ok().build();
     }
 }
