@@ -73,6 +73,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                         WARD_NURSE + "/**",
                         EMPLOYEE + "/**")
                 .hasRole(ROLE_MOVEMENT)
+                .antMatchers(REPORT + MEAL,
+                        REPORT + REPORT_SUMMARY,
+                        REPORT + REPORT_DEMANDS)
+                .hasRole(MAIN_KITCHEN_DIETITIAN)
+                .antMatchers(REPORT + REPORT_CONTROL)
+                .hasRole(ROLE_MOVEMENT)
                 .antMatchers(DIET + "/**",
                         MEAL_TYPE + "/**",
                         WARD + "/**",

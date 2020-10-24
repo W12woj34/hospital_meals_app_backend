@@ -25,7 +25,6 @@ public class MealController
         this.service = service;
     }
 
-
     @GetMapping(RestMappings.MEAL_ORDER)
     public Page<PatientMealOrderDto> getMealsOrderData(@RequestHeader("Authorization") String token) {
         return service.getPatientsOrders(token);

@@ -23,6 +23,7 @@
         <assertj-core.version>3.16.1</assertj-core.version>
         <flyway.version>6.5.3</flyway.version>
         <jjwt.version>0.9.1</jjwt.version>
+        <jasperreports.version>6.15.0</jasperreports.version>
     </properties>
 
     <dependencies>
@@ -106,6 +107,12 @@
         </dependency>
 
         <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasperreports.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
@@ -127,7 +134,7 @@
                 <configuration>
                     <url>jdbc:mysql://localhost:3306/hospital_meals_app?serverTimezone=UTC&amp;useLegacyDatetimeCode=false</url>
                     <user>su</user>
-                    <password>Tygrys250!</password>
+                    <password>Qazxsw!23</password>
                 </configuration>
             </plugin>
 

@@ -26,6 +26,7 @@ public final class RestMappings {
     public static final String PATIENT_DIET = "/patients-diets";
     public static final String PATIENT_MOVEMENT = "/patient-movements";
     public static final String PERSON = "/people";
+    public static final String REPORT = "/reports";
     public static final String RESTRICTION_STATUS = "/restriction-statuses";
     public static final String STAY = "/stays";
     public static final String WARD = "/wards";
@@ -40,6 +41,9 @@ public final class RestMappings {
     public static final String REFRESH_TOKEN = "/refresh";
     public static final String CHANGE_PASSWORD = "change-password";
     public static final String CHANGE_PASSWORD_FORCE = "change-password-force";
+    public static final String REPORT_DEMANDS = "/demands";
+    public static final String REPORT_SUMMARY = "/summary";
+    public static final String REPORT_CONTROL = "/control";
 
     private RestMappings() {
     }

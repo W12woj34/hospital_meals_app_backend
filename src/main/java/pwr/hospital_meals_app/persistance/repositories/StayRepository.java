@@ -12,6 +12,8 @@ public interface StayRepository extends BaseRepository<StayEntity, Integer> {
 
     List<StayEntity> findByArchivedAndWard(boolean isArchived, WardEntity ward);
 
+    List<StayEntity> findByWard(WardEntity ward);
+
     List<StayEntity> findByWardAndAdmissionDateLessThanEqualAndReleaseDateGreaterThanEqual(WardEntity ward,
                                                                                            LocalDate admissionDate,
                                                                                            LocalDate releaseDate);

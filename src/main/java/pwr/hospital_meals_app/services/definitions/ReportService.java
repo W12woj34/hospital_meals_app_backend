@@ -1,10 +1,17 @@
 package pwr.hospital_meals_app.services.definitions;
 
+import org.springframework.core.io.Resource;
+import pwr.hospital_meals_app.dto.additionals.MealDemandsDto;
+
 import java.time.LocalDate;
 
 public interface ReportService {
 
-    void generatePatientsAndMealsReport(LocalDate date);
+    Resource generatePatientsAndMealsReport(LocalDate date);
 
-    void generateSummaryMealsReport();
+    Resource generateSummaryMealsReport();
+
+    Resource generateTodayMealsDemand();
+
+    MealDemandsDto getMealDemands();
 }
