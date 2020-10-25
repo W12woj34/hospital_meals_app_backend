@@ -48,7 +48,7 @@ public abstract class BaseRestGetController<T extends PersistableDto<ID>, ID ext
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorised"),
             @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not found"),
+            @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Internal server error")})
     @GetMapping(RestMappings.ID)
     public T getById(@PathVariable ID id) {

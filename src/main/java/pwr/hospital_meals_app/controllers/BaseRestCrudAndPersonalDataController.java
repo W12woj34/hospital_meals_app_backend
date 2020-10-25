@@ -36,7 +36,7 @@ public abstract class BaseRestCrudAndPersonalDataController<T extends Persistabl
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorised"),
             @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not found"),
+            @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Internal server error")})
     @GetMapping(RestMappings.PERSONAL)
     public T getPersonal(@RequestHeader("Authorization") String token) {
