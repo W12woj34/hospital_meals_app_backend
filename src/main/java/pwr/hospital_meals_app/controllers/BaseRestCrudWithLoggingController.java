@@ -1,5 +1,8 @@
 package pwr.hospital_meals_app.controllers;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +44,14 @@ public abstract class BaseRestCrudWithLoggingController<
         this.service = service;
     }
 
+
+    @ApiOperation(value = "Base rest post with logging")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorised"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 500, message = "Internal server error")})
     @Validated(OnCreate.class)
     @PostMapping
     public ResponseEntity<T> create(@RequestHeader("Authorization") String token,
@@ -56,7 +67,14 @@ public abstract class BaseRestCrudWithLoggingController<
         return ResponseEntity.created(entityMapping).body(savedEntity);
     }
 
-
+    @ApiOperation(value = "Base rest put by id with logging")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorised"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not found"),
+            @ApiResponse(code = 500, message = "Internal server error")})
     @Validated(OnPut.class)
     @PutMapping(RestMappings.ID)
     public ResponseEntity<T> updateById(@RequestHeader("Authorization") String token,

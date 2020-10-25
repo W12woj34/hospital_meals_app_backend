@@ -25,6 +25,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private final UserDetailsServiceImpl userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SecurityKeys securityKeys;
+
     public WebSecurity(
             UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder,
             SecurityKeys securityKeys) {
@@ -96,7 +97,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(LOGIN + "/**")
                 .hasRole(ROLE_MOVEMENT)
                 .anyRequest()
-                .authenticated()
+                .permitAll()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), securityKeys))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), securityKeys))

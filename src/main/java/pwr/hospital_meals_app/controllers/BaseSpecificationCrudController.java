@@ -1,5 +1,8 @@
 package pwr.hospital_meals_app.controllers;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Persistable;
@@ -25,6 +28,13 @@ public abstract class BaseSpecificationCrudController<
         this.service = service;
     }
 
+    @ApiOperation(value = "Base rest get all with given specification")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", responseContainer = "Page"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorised"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 500, message = "Internal server error")})
     @GetMapping(RestMappings.SEARCH)
     public Page<T> getAllWithGivenParameters(S specification, Pageable pageable) {
         return service.findAll(specification, pageable);

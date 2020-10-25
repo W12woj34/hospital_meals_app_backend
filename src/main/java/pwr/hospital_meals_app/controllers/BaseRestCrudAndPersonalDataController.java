@@ -1,5 +1,8 @@
 package pwr.hospital_meals_app.controllers;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pwr.hospital_meals_app.dto.base.PersistableDto;
@@ -27,6 +30,14 @@ public abstract class BaseRestCrudAndPersonalDataController<T extends Persistabl
         this.service = service;
     }
 
+    @ApiOperation(value = "Rest get with id from token")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorised"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not found"),
+            @ApiResponse(code = 500, message = "Internal server error")})
     @GetMapping(RestMappings.PERSONAL)
     public T getPersonal(@RequestHeader("Authorization") String token) {
         return service.getPersonal(token).orElseThrow(() ->
