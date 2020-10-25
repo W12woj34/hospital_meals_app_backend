@@ -70,15 +70,15 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(MAIN_KITCHEN_DIETITIAN + "/**",
                         DIETITIAN + "/**",
                         PATIENT_MOVEMENT + "/**",
-                        WARD_NURSE + "/**",
                         EMPLOYEE + "/**")
                 .hasRole(ROLE_MOVEMENT)
+                .antMatchers(WARD_NURSE + "/**")
+                .hasAnyRole(ROLE_MOVEMENT, ROLE_NURSE)
                 .antMatchers(REPORT + MEAL,
                         REPORT + REPORT_SUMMARY,
-                        REPORT + REPORT_DEMANDS)
-                .hasRole(MAIN_KITCHEN_DIETITIAN)
-                .antMatchers(REPORT + REPORT_CONTROL)
-                .hasRole(ROLE_MOVEMENT)
+                        REPORT + REPORT_DEMANDS,
+                        REPORT + REPORT_CONTROL)
+                .authenticated()
                 .antMatchers(DIET + "/**",
                         MEAL_TYPE + "/**",
                         WARD + "/**",

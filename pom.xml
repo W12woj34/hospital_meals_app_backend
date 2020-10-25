@@ -21,7 +21,7 @@
         <lombok.version>1.18.12</lombok.version>
         <hibernate-jpamodelgen.version>5.4.22.Final</hibernate-jpamodelgen.version>
         <assertj-core.version>3.17.2</assertj-core.version>
-        <flyway.version>7.0.4</flyway.version>
+        <flyway.version>6.5.3</flyway.version>
         <jjwt.version>0.9.1</jjwt.version>
         <jasperreports.version>6.15.0</jasperreports.version>
     </properties>

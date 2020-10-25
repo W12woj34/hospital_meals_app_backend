@@ -301,7 +301,7 @@ public class ReportServiceImpl implements ReportService {
                 .sorted().collect(Collectors.toList());
 
         if (timeSignatures.isEmpty()) {
-            dto.setLastUpdate("Brak zamówień");
+            dto.setLastUpdate("");
         } else {
             dto.setLastUpdate(timeSignatures.get(timeSignatures.size() - 1));
         }
