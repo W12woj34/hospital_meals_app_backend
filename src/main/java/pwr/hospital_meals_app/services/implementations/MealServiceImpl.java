@@ -3,6 +3,7 @@ package pwr.hospital_meals_app.services.implementations;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static pwr.hospital_meals_app.security.SecurityConstants.SECRET_AUTH;
 import static pwr.hospital_meals_app.security.SecurityConstants.TOKEN_PREFIX;
 
 @Service
@@ -53,6 +53,9 @@ public class MealServiceImpl
     private final OrderService orderService;
     private final OrderRepository orderRepository;
     private final DietRepository dietRepository;
+
+    @Value("${jwt-secret-key}")
+    private String SECRET_AUTH;
 
     public MealServiceImpl(MealRepository repository,
                            MealMapper mapper,

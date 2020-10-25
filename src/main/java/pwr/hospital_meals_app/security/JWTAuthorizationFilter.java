@@ -19,8 +19,11 @@ import static pwr.hospital_meals_app.security.SecurityConstants.*;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
+    private final SecurityKeys keys;
+
+    public JWTAuthorizationFilter(AuthenticationManager authManager, SecurityKeys keys) {
         super(authManager);
+        this.keys = keys;
     }
 
     @Override
@@ -53,7 +56,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
             Jws<Claims> claimsJws =
                     Jwts.parser()
-                            .setSigningKey(SECRET_AUTH.getBytes())
+                            .setSigningKey(keys.getSECRET_AUTH().getBytes())
                             .parseClaimsJws(token.replace(TOKEN_PREFIX, ""));
 
             SimpleGrantedAuthority role = new SimpleGrantedAuthority(claimsJws.getBody().get("role").toString());

@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,6 +34,12 @@ public class LoginServiceImpl
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserDetailsServiceImpl userDetailsService;
     private final EmployeeRepository employeeRepository;
+
+    @Value("${jwt-secret-key}")
+    private String SECRET_AUTH;
+
+    @Value("${refresh-token-secret-key}")
+    private String SECRET_REFRESH;
 
     public LoginServiceImpl(LoginRepository repository,
                             LoginMapper mapper,
@@ -86,6 +93,7 @@ public class LoginServiceImpl
 
     @Override
     public Optional<Integer> getUserLoginId(String token) {
+
         Jws<Claims> claimsJws =
                 Jwts.parser()
                         .setSigningKey(SECRET_AUTH.getBytes())

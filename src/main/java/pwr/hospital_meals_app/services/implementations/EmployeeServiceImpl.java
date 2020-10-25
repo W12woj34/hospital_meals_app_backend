@@ -3,6 +3,7 @@ package pwr.hospital_meals_app.services.implementations;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,6 @@ import pwr.hospital_meals_app.services.mappers.EmployeeMapper;
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
-import static pwr.hospital_meals_app.security.SecurityConstants.SECRET_AUTH;
 import static pwr.hospital_meals_app.security.SecurityConstants.TOKEN_PREFIX;
 
 @Service
@@ -32,6 +32,9 @@ public class EmployeeServiceImpl
     private final PatientMovementRepository patientMovementRepository;
     private final LoginRepository loginRepository;
     private final PersonRepository personRepository;
+
+    @Value("${jwt-secret-key}")
+    private String SECRET_AUTH;
 
     public EmployeeServiceImpl(EmployeeRepository repository,
                                EmployeeMapper mapper,

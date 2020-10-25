@@ -3,6 +3,7 @@ package pwr.hospital_meals_app.services.definitions;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -17,7 +18,6 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Optional;
 
-import static pwr.hospital_meals_app.security.SecurityConstants.SECRET_AUTH;
 import static pwr.hospital_meals_app.security.SecurityConstants.TOKEN_PREFIX;
 
 /**
@@ -44,6 +44,9 @@ public abstract class BaseLoggingCrudService<
     private final EventMapper eventMapper;
     private final Integer createStatus;
     private final Integer updateStatus;
+
+    @Value("${jwt-secret-key}")
+    private String SECRET_AUTH;
 
 
     public BaseLoggingCrudService(R repository,

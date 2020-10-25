@@ -3,6 +3,7 @@ package pwr.hospital_meals_app.services.definitions;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pwr.hospital_meals_app.dto.base.PersistableDto;
@@ -12,7 +13,6 @@ import pwr.hospital_meals_app.services.mappers.BaseMapper;
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
-import static pwr.hospital_meals_app.security.SecurityConstants.SECRET_AUTH;
 import static pwr.hospital_meals_app.security.SecurityConstants.TOKEN_PREFIX;
 
 /**
@@ -28,6 +28,9 @@ public abstract class BasePersonalCrudService<
         extends BaseCrudService<T, E, Integer, R> implements PersonalDataService<T> {
 
     private final LoginRepository loginRepository;
+
+    @Value("${jwt-secret-key}")
+    private String SECRET_AUTH;
 
     public BasePersonalCrudService(R repository, BaseMapper<T, E> mapper, LoginRepository loginRepository) {
         super(repository, mapper);

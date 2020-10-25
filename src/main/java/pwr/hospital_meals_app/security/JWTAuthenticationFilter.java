@@ -22,12 +22,14 @@ import java.util.Date;
 
 import static pwr.hospital_meals_app.security.SecurityConstants.*;
 
-
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
+    private final SecurityKeys keys;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager,
+                                   SecurityKeys keys) {
         this.authenticationManager = authenticationManager;
+        this.keys = keys;
     }
 
     @Override
@@ -60,7 +62,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                         .claim("role", role)
                         .setIssuedAt(new Date(currentTimeMillis))
                         .setExpiration(new Date(currentTimeMillis + EXPIRATION_TIME))
-                        .signWith(SignatureAlgorithm.HS512, SECRET_AUTH.getBytes())
+                        .signWith(SignatureAlgorithm.HS512, keys.getSECRET_AUTH().getBytes())
                         .compact();
 
         String tokenRefresh =
@@ -68,7 +70,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                         .setSubject(((User) auth.getPrincipal()).getUsername())
                         .setIssuedAt(new Date(currentTimeMillis))
                         .setExpiration(new Date(currentTimeMillis + EXPIRATION_TIME_REFRESH))
-                        .signWith(SignatureAlgorithm.HS512, SECRET_REFRESH.getBytes())
+                        .signWith(SignatureAlgorithm.HS512, keys.getSECRET_REFRESH().getBytes())
                         .compact();
 
         response.addHeader(HEADER_STRING_ROLE, role);
