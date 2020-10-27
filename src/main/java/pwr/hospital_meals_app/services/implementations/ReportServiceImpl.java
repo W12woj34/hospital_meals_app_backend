@@ -71,9 +71,12 @@ public class ReportServiceImpl implements ReportService {
                     .map(PatientEntity::getOrders)
                     .flatMap(Collection::stream)
                     .map(OrderEntity::getMeal)
-                    .filter(m -> m.getDate() == date)
+                    .filter(m -> m.getDate().compareTo(date) == 0)
                     .map(MealEntity::getType)
                     .collect(Collectors.toList());
+
+
+
 
             int breakfast = 0;
             int lunch = 0;

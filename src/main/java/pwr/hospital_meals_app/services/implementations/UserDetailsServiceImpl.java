@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import pwr.hospital_meals_app.persistance.entities.EmployeeEntity;
 import pwr.hospital_meals_app.persistance.entities.LoginEntity;
 import pwr.hospital_meals_app.persistance.repositories.*;
 
@@ -48,23 +49,24 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
+        EmployeeEntity employee = user.getEmployee();
 
-        if (wardNurseRepository.findById(Objects.requireNonNull(user.getId())).isPresent()) {
+        if (wardNurseRepository.findById(Objects.requireNonNull(employee.getId())).isPresent()) {
             return new User(user.getUsername(), user.getPassword(),
                     Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + ROLE_NURSE)));
         }
 
-        if (dietitianRepository.findById(Objects.requireNonNull(user.getId())).isPresent()) {
+        if (dietitianRepository.findById(Objects.requireNonNull(employee.getId())).isPresent()) {
             return new User(user.getUsername(), user.getPassword(),
                     Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + ROLE_DIETITIAN)));
         }
 
-        if (mainKitchenDietitianRepository.findById(Objects.requireNonNull(user.getId())).isPresent()) {
+        if (mainKitchenDietitianRepository.findById(Objects.requireNonNull(employee.getId())).isPresent()) {
             return new User(user.getUsername(), user.getPassword(),
                     Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + ROLE_KITCHEN)));
         }
 
-        if (patientMovementRepository.findById(Objects.requireNonNull(user.getId())).isPresent()) {
+        if (patientMovementRepository.findById(Objects.requireNonNull(employee.getId())).isPresent()) {
             return new User(user.getUsername(), user.getPassword(),
                     Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + ROLE_MOVEMENT)));
         }
