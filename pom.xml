@@ -24,8 +24,10 @@
         <flyway.version>6.5.3</flyway.version>
         <jjwt.version>0.9.1</jjwt.version>
         <jasperreports.version>6.15.0</jasperreports.version>
-        <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
-        <springfox-swagger-ui.version>3.0.0</springfox-swagger-ui.version>
+        <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
+        <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
+        <junit-jupiter-api.version>5.7.0</junit-jupiter-api.version>
+        <flyway-spring-test.version>7.0.0</flyway-spring-test.version>
     </properties>
 
     <dependencies>
@@ -122,14 +124,35 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
+            <version>${springfox-swagger2.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
+            <version>${springfox-swagger-ui.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb.flyway-test-extensions</groupId>
+            <artifactId>flyway-spring-test</artifactId>
+            <version>${flyway-spring-test.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter-api.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
 
     </dependencies>
 
