@@ -168,11 +168,6 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>${flyway.version}</version>
-                <configuration>
-                    <url>jdbc:mysql://localhost:3306/hospital_meals_app?serverTimezone=UTC&amp;useLegacyDatetimeCode=false</url>
-                    <user>su</user>
-                    <password>Qazxsw!23</password>
-                </configuration>
             </plugin>
 
             <plugin>
