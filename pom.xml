@@ -25,7 +25,7 @@
         <jjwt.version>0.9.1</jjwt.version>
         <jasperreports.version>6.15.0</jasperreports.version>
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
-        <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
+        <springfox-swagger-ui.version>2.10.0</springfox-swagger-ui.version>
         <junit-jupiter-api.version>5.7.0</junit-jupiter-api.version>
         <flyway-spring-test.version>7.0.0</flyway-spring-test.version>
     </properties>
